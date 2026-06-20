@@ -1,4 +1,4 @@
-﻿import Foundation
+import Foundation
 
 enum DateUtils {
     static let dateFormatter: DateFormatter = {
@@ -17,29 +17,14 @@ enum DateUtils {
         return formatter
     }()
 
-    static let timeFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "ja_JP")
-        formatter.dateStyle = .none
-        formatter.timeStyle = .short
-        return formatter
-    }()
-
-    static let fileNameDateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "ja_JP")
-        formatter.dateFormat = "yyyyMMdd-HHmmss"
-        return formatter
-    }()
-
     static func formatDuration(_ seconds: Int) -> String {
         let hours = seconds / 3600
         let minutes = (seconds % 3600) / 60
 
         if hours > 0 {
-            return "\(hours)譎る俣\(minutes)蛻・
+            return "\(hours)時間\(minutes)分"
         }
 
-        return "\(minutes)蛻・
+        return "\(minutes)分"
     }
 }

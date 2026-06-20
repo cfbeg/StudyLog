@@ -1,4 +1,4 @@
-﻿import SwiftData
+import SwiftData
 import SwiftUI
 
 struct SubjectEditorView: View {
@@ -25,12 +25,12 @@ struct SubjectEditorView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("蝓ｺ譛ｬ") {
-                    TextField("謨咏ｧ大錐", text: $name)
-                    TextField("SF Symbols 繧｢繧､繧ｳ繝ｳ蜷・, text: $iconName)
+                Section("基本") {
+                    TextField("教科名", text: $name)
+                    TextField("SF Symbols アイコン名", text: $iconName)
                 }
 
-                Section("濶ｲ") {
+                Section("色") {
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 44))]) {
                         ForEach(ColorUtils.defaultSubjectColors, id: \.self) { hex in
                             Button {
@@ -54,9 +54,9 @@ struct SubjectEditorView: View {
                         .textInputAutocapitalization(.characters)
                 }
 
-                Section("逶ｮ讓・) {
-                    Stepper("1譌･ \(dailyGoalMinutes) 蛻・, value: $dailyGoalMinutes, in: 0...600, step: 10)
-                    Stepper("1騾ｱ髢・\(weeklyGoalMinutes) 蛻・, value: $weeklyGoalMinutes, in: 0...5000, step: 30)
+                Section("目標") {
+                    Stepper("1日 (dailyGoalMinutes) 分", value: $dailyGoalMinutes, in: 0...600, step: 10)
+                    Stepper("1週間 (weeklyGoalMinutes) 分", value: $weeklyGoalMinutes, in: 0...5000, step: 30)
                 }
 
                 if let subject {
@@ -66,23 +66,23 @@ struct SubjectEditorView: View {
                             subject.updatedAt = Date()
                             dismiss()
                         } label: {
-                            Label("縺薙・謨咏ｧ代ｒ繧｢繝ｼ繧ｫ繧､繝・, systemImage: "archivebox")
+                            Label("この教科をアーカイブ", systemImage: "archivebox")
                         }
                     } footer: {
-                        Text("螳悟・蜑企勁縺ｯ謨咏ｧ題ｩｳ邏ｰ縺ｾ縺溘・謨咏ｧ台ｸ隕ｧ縺ｮ繝｡繝九Η繝ｼ縺九ｉ螳溯｡後〒縺阪∪縺吶・)
+                        Text("履歴を残すため、削除ではなく非表示にします。")
                     }
                 }
             }
-            .navigationTitle(subject == nil ? "謨咏ｧ代ｒ霑ｽ蜉" : "謨咏ｧ代ｒ邱ｨ髮・)
+            .navigationTitle(subject == nil ? "教科を追加" : "教科を編集")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("繧ｭ繝｣繝ｳ繧ｻ繝ｫ") {
+                    Button("キャンセル") {
                         dismiss()
                     }
                 }
 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("菫晏ｭ・) {
+                    Button("保存") {
                         save()
                     }
                     .disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)

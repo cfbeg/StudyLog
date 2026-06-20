@@ -1,4 +1,4 @@
-﻿import Foundation
+import Foundation
 import SwiftData
 
 @Model
@@ -17,7 +17,7 @@ final class Subject {
     @Relationship(deleteRule: .cascade)
     var tasks: [StudyTask]
 
-    @Relationship(deleteRule: .nullify)
+    @Relationship(deleteRule: .cascade)
     var sessions: [StudySession]
 
     init(
