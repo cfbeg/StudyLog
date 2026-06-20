@@ -1,4 +1,4 @@
-import SwiftData
+﻿import SwiftData
 import SwiftUI
 
 struct TaskDetailView: View {
@@ -21,17 +21,17 @@ struct TaskDetailView: View {
                     Text(task.title)
                         .font(.title2.bold())
                     if let subject = task.subject {
-                        Text("Subject: \(subject.name)")
+                        Text("謨咏ｧ・ \(subject.name)")
                             .foregroundStyle(.secondary)
                     }
-                    Text("Status: \(task.status.displayName)")
-                    Text("Priority: \(task.priority.displayName)")
+                    Text("迥ｶ諷・ \(task.status.displayName)")
+                    Text("蜆ｪ蜈亥ｺｦ: \(task.priority.displayName)")
                     if task.estimatedSeconds > 0 {
-                        Text("Estimate: \(DateUtils.formatDuration(task.estimatedSeconds))")
+                        Text("莠亥ｮ壽凾髢・ \(DateUtils.formatDuration(task.estimatedSeconds))")
                     }
-                    Text("Actual: \(DateUtils.formatDuration(task.spentSeconds))")
+                    Text("螳溽ｸｾ譎る俣: \(DateUtils.formatDuration(task.spentSeconds))")
                     if let dueDate = task.dueDate {
-                        Text("Due: \(DateUtils.dateFormatter.string(from: dueDate))")
+                        Text("譛滄剞: \(DateUtils.dateFormatter.string(from: dueDate))")
                     }
                     if !task.note.isEmpty {
                         Text(task.note)
@@ -44,20 +44,20 @@ struct TaskDetailView: View {
                 Button {
                     isShowingTimer = true
                 } label: {
-                    Label("Start this task", systemImage: "play.circle.fill")
+                    Label("縺薙・繧ｿ繧ｹ繧ｯ縺ｧ蜍牙ｼｷ髢句ｧ・, systemImage: "play.circle.fill")
                 }
                 .disabled(task.subject == nil)
 
                 Button {
                     toggleCompletion()
                 } label: {
-                    Label(task.status == .completed ? "Mark open" : "Mark completed", systemImage: task.status == .completed ? "arrow.uturn.backward.circle" : "checkmark.circle")
+                    Label(task.status == .completed ? "譛ｪ螳御ｺ・↓謌ｻ縺・ : "螳御ｺ・↓縺吶ｋ", systemImage: task.status == .completed ? "arrow.uturn.backward.circle" : "checkmark.circle")
                 }
             }
 
-            Section("History") {
+            Section("螻･豁ｴ") {
                 if sortedSessions.isEmpty {
-                    Text("No sessions for this task yet.")
+                    Text("縺薙・繧ｿ繧ｹ繧ｯ縺ｮ險倬鹸縺ｯ縺ｾ縺縺ゅｊ縺ｾ縺帙ｓ縲・)
                         .foregroundStyle(.secondary)
                 } else {
                     ForEach(sortedSessions) { session in
@@ -70,16 +70,16 @@ struct TaskDetailView: View {
                 Button(role: .destructive) {
                     isShowingDeleteConfirmation = true
                 } label: {
-                    Label("Delete", systemImage: "trash")
+                    Label("蜑企勁", systemImage: "trash")
                 }
             } footer: {
-                Text("Deleting a task keeps past study sessions, but removes the task link.")
+                Text("蜑企勁縺励※繧る℃蜴ｻ縺ｮ蜍牙ｼｷ繝ｭ繧ｰ縺ｯ谿九ｊ縲√ち繧ｹ繧ｯ縺ｨ縺ｮ邏舌▼縺代□縺大､悶ｌ縺ｾ縺吶・)
             }
         }
-        .navigationTitle("Task details")
+        .navigationTitle("繧ｿ繧ｹ繧ｯ隧ｳ邏ｰ")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button("Edit") {
+                Button("邱ｨ髮・) {
                     isShowingEditor = true
                 }
             }
@@ -94,17 +94,16 @@ struct TaskDetailView: View {
                 StudyTimerView(initialSubject: subject, initialTask: task)
             }
         }
-        .confirmationDialog("Delete this task?", isPresented: $isShowingDeleteConfirmation, titleVisibility: .visible) {
-            Button("Delete", role: .destructive) {
+        .confirmationDialog("縺薙・繧ｿ繧ｹ繧ｯ繧貞炎髯､縺励∪縺吶°・・, isPresented: $isShowingDeleteConfirmation, titleVisibility: .visible) {
+            Button("蜑企勁", role: .destructive) {
                 deleteTask()
             }
-            Button("Cancel", role: .cancel) {}
+            Button("繧ｭ繝｣繝ｳ繧ｻ繝ｫ", role: .cancel) {}
         }
     }
 
     private func toggleCompletion() {
         task.status = task.status == .completed ? .inProgress : .completed
-        try? modelContext.save()
     }
 
     private func deleteTask() {

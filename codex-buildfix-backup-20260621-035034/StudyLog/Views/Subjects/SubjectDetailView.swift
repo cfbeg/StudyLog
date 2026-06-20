@@ -1,4 +1,4 @@
-import SwiftData
+﻿import SwiftData
 import SwiftUI
 
 struct SubjectDetailView: View {
@@ -38,9 +38,9 @@ struct SubjectDetailView: View {
                         .foregroundStyle(ColorUtils.color(from: subject.colorHex))
 
                     HStack {
-                        MetricPill(title: "Today", seconds: StatisticsService.totalSecondsToday(for: subject, sessions: allSessions))
-                        MetricPill(title: "Week", seconds: StatisticsService.totalSecondsThisWeek(for: subject, sessions: allSessions))
-                        MetricPill(title: "Total", seconds: StatisticsService.totalSeconds(for: subject, sessions: allSessions))
+                        MetricPill(title: "莉頑律", seconds: StatisticsService.totalSecondsToday(for: subject, sessions: allSessions))
+                        MetricPill(title: "莉企ｱ", seconds: StatisticsService.totalSecondsThisWeek(for: subject, sessions: allSessions))
+                        MetricPill(title: "邏ｯ險・, seconds: StatisticsService.totalSeconds(for: subject, sessions: allSessions))
                     }
 
                     if subject.dailyGoalSeconds > 0 {
@@ -50,7 +50,7 @@ struct SubjectDetailView: View {
                                 goalSeconds: subject.dailyGoalSeconds
                             )
                         ) {
-                            Text("Daily goal \(DateUtils.formatDuration(subject.dailyGoalSeconds))")
+                            Text("莉頑律縺ｮ逶ｮ讓・\(DateUtils.formatDuration(subject.dailyGoalSeconds))")
                         }
                         .tint(ColorUtils.color(from: subject.colorHex))
                     }
@@ -60,19 +60,19 @@ struct SubjectDetailView: View {
                 Button {
                     isShowingTimer = true
                 } label: {
-                    Label("Start studying this subject", systemImage: "play.circle.fill")
+                    Label("縺薙・謨咏ｧ代〒蜍牙ｼｷ髢句ｧ・, systemImage: "play.circle.fill")
                 }
 
                 Button {
                     isShowingTaskEditor = true
                 } label: {
-                    Label("Add task", systemImage: "checklist")
+                    Label("繧ｿ繧ｹ繧ｯ繧定ｿｽ蜉", systemImage: "checklist")
                 }
             }
 
-            Section("Open tasks") {
+            Section("譛ｪ螳御ｺ・ち繧ｹ繧ｯ") {
                 if pendingTasks.isEmpty {
-                    Text("No open tasks.")
+                    Text("譛ｪ螳御ｺ・ち繧ｹ繧ｯ縺ｯ縺ゅｊ縺ｾ縺帙ｓ縲・)
                         .foregroundStyle(.secondary)
                 } else {
                     ForEach(pendingTasks) { task in
@@ -92,14 +92,14 @@ struct SubjectDetailView: View {
                     }
                 } label: {
                     Label(
-                        isShowingCompletedTasks ? "Hide completed" : "Show completed (\(completedTasks.count))",
+                        isShowingCompletedTasks ? "螳御ｺ・ｸ医∩繧帝國縺・ : "螳御ｺ・ｸ医∩繧定｡ｨ遉ｺ・・(completedTasks.count)・・,
                         systemImage: isShowingCompletedTasks ? "chevron.up.circle" : "chevron.down.circle"
                     )
                 }
 
                 if isShowingCompletedTasks {
                     if completedTasks.isEmpty {
-                        Text("No completed tasks yet.")
+                        Text("縺ｾ縺螳御ｺ・ｸ医∩繧ｿ繧ｹ繧ｯ縺ｯ縺ゅｊ縺ｾ縺帙ｓ縲・)
                             .foregroundStyle(.secondary)
                     } else {
                         ForEach(completedTasks) { task in
@@ -112,12 +112,12 @@ struct SubjectDetailView: View {
                     }
                 }
             } header: {
-                Text("Completed")
+                Text("螳御ｺ・ｸ医∩")
             }
 
-            Section("Study history") {
+            Section("蜍牙ｼｷ螻･豁ｴ") {
                 if subjectSessions.isEmpty {
-                    Text("No sessions for this subject yet.")
+                    Text("縺薙・謨咏ｧ代・險倬鹸縺ｯ縺ｾ縺縺ゅｊ縺ｾ縺帙ｓ縲・)
                         .foregroundStyle(.secondary)
                 } else {
                     ForEach(subjectSessions.prefix(10)) { session in
@@ -130,18 +130,17 @@ struct SubjectDetailView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
-                    Button("Edit", systemImage: "pencil") {
+                    Button("邱ｨ髮・, systemImage: "pencil") {
                         isShowingSubjectEditor = true
                     }
 
-                    Button("Archive", systemImage: "archivebox") {
+                    Button("繧｢繝ｼ繧ｫ繧､繝・, systemImage: "archivebox") {
                         subject.isArchived = true
                         subject.updatedAt = Date()
-                        try? modelContext.save()
                         dismiss()
                     }
 
-                    Button("Delete permanently", systemImage: "trash", role: .destructive) {
+                    Button("螳悟・縺ｫ蜑企勁", systemImage: "trash", role: .destructive) {
                         isShowingDeleteConfirmation = true
                     }
                 } label: {
@@ -158,13 +157,13 @@ struct SubjectDetailView: View {
         .sheet(isPresented: $isShowingSubjectEditor) {
             SubjectEditorView(subject: subject)
         }
-        .confirmationDialog("Delete this subject?", isPresented: $isShowingDeleteConfirmation, titleVisibility: .visible) {
-            Button("Delete permanently", role: .destructive) {
+        .confirmationDialog("縺薙・謨咏ｧ代ｒ螳悟・縺ｫ蜑企勁縺励∪縺吶°・・, isPresented: $isShowingDeleteConfirmation, titleVisibility: .visible) {
+            Button("螳悟・縺ｫ蜑企勁", role: .destructive) {
                 permanentlyDeleteSubject()
             }
-            Button("Cancel", role: .cancel) {}
+            Button("繧ｭ繝｣繝ｳ繧ｻ繝ｫ", role: .cancel) {}
         } message: {
-            Text("Past study sessions will remain, but subject and task links will be removed.")
+            Text("驕主悉縺ｮ蜍牙ｼｷ繝ｭ繧ｰ縺ｯ谿九＠縲∵蕗遘代→繧ｿ繧ｹ繧ｯ縺ｮ邏舌▼縺代□縺大､悶＠縺ｾ縺吶・)
         }
     }
 

@@ -33,43 +33,43 @@ struct ManualRecordView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Record") {
-                    Picker("Subject", selection: $selectedSubjectID) {
-                        Text("Choose a subject").tag(UUID?.none)
+                Section("記録") {
+                    Picker("教科", selection: $selectedSubjectID) {
+                        Text("選択してください").tag(UUID?.none)
                         ForEach(activeSubjects) { subject in
                             Text(subject.name).tag(UUID?.some(subject.id))
                         }
                     }
 
-                    Picker("Task", selection: $selectedTaskID) {
-                        Text("None").tag(UUID?.none)
+                    Picker("タスク", selection: $selectedTaskID) {
+                        Text("なし").tag(UUID?.none)
                         ForEach(availableTasks) { task in
                             Text(task.title).tag(UUID?.some(task.id))
                         }
                     }
                     .disabled(selectedSubjectID == nil)
 
-                    DatePicker("Started", selection: $startedAt)
-                    Stepper("Duration \(durationMinutes) min", value: $durationMinutes, in: 1...720, step: 5)
-                    TextField("Memo", text: $memo, axis: .vertical)
+                    DatePicker("開始", selection: $startedAt)
+                    Stepper("時間 (durationMinutes) 分", value: $durationMinutes, in: 1...720, step: 5)
+                    TextField("メモ", text: $memo, axis: .vertical)
                 }
             }
-            .navigationTitle("Manual record")
+            .navigationTitle("手動記録")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
+                    Button("キャンセル") {
                         dismiss()
                     }
                 }
 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") {
+                    Button("保存") {
                         save()
                     }
                     .disabled(selectedSubjectID == nil)
                 }
             }
-            .onChange(of: selectedSubjectID) { _, _ in
+            .onChange(of: selectedSubjectID) {
                 selectedTaskID = nil
             }
             .onAppear {

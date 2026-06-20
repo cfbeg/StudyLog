@@ -1,4 +1,4 @@
-import Foundation
+﻿import Foundation
 
 enum DateUtils {
     static let dateFormatter: DateFormatter = {
@@ -33,14 +33,13 @@ enum DateUtils {
     }()
 
     static func formatDuration(_ seconds: Int) -> String {
-        let safeSeconds = max(0, seconds)
-        let hours = safeSeconds / 3600
-        let minutes = (safeSeconds % 3600) / 60
+        let hours = seconds / 3600
+        let minutes = (seconds % 3600) / 60
 
         if hours > 0 {
-            return "\(hours)h \(minutes)m"
+            return "\(hours)譎る俣\(minutes)蛻・
         }
 
-        return "\(minutes)m"
+        return "\(minutes)蛻・
     }
 }

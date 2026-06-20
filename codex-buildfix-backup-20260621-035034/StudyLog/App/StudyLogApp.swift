@@ -1,4 +1,4 @@
-import Charts
+﻿import Charts
 import SwiftData
 import SwiftUI
 
@@ -23,27 +23,27 @@ struct ContentView: View {
         TabView {
             HomeView()
                 .tabItem {
-                    Label("Home", systemImage: "house.fill")
+                    Label("繝帙・繝", systemImage: "house.fill")
                 }
 
             SubjectListView()
                 .tabItem {
-                    Label("Subjects", systemImage: "books.vertical.fill")
+                    Label("謨咏ｧ・, systemImage: "books.vertical.fill")
                 }
 
             StatisticsView()
                 .tabItem {
-                    Label("Stats", systemImage: "chart.bar.xaxis")
+                    Label("邨ｱ險・, systemImage: "chart.bar.xaxis")
                 }
 
             RecordListView()
                 .tabItem {
-                    Label("Records", systemImage: "calendar")
+                    Label("險倬鹸", systemImage: "calendar")
                 }
 
             SettingsView()
                 .tabItem {
-                    Label("Settings", systemImage: "gearshape.fill")
+                    Label("險ｭ螳・, systemImage: "gearshape.fill")
                 }
         }
         .preferredColorScheme(preferredColorScheme)
@@ -51,12 +51,9 @@ struct ContentView: View {
 
     private var preferredColorScheme: ColorScheme? {
         switch appTheme {
-        case "light":
-            return .light
-        case "dark":
-            return .dark
-        default:
-            return nil
+        case "light": .light
+        case "dark": .dark
+        default: nil
         }
     }
 }
@@ -83,17 +80,13 @@ private struct StatisticsView: View {
     var body: some View {
         NavigationStack {
             List {
-                Section("Today by subject") {
+                Section("莉頑律縺ｮ謨咏ｧ大挨") {
                     if todaySubjectSummaries.isEmpty {
-                        ContentUnavailableView(
-                            "No study logged today",
-                            systemImage: "chart.pie",
-                            description: Text("Start the timer or add a manual record to see the chart.")
-                        )
+                        ContentUnavailableView("莉頑律縺ｮ險倬鹸縺ｯ縺ｾ縺縺ゅｊ縺ｾ縺帙ｓ", systemImage: "chart.pie", description: Text("繧ｿ繧､繝槭・縺ｾ縺溘・謇句虚險倬鹸繧定ｿｽ蜉縺吶ｋ縺ｨ陦ｨ遉ｺ縺輔ｌ縺ｾ縺吶・))
                     } else {
                         Chart(todaySubjectSummaries) { summary in
                             SectorMark(
-                                angle: .value("Seconds", summary.seconds),
+                                angle: .value("譎る俣", summary.seconds),
                                 innerRadius: .ratio(0.55),
                                 angularInset: 2
                             )
@@ -122,26 +115,26 @@ private struct StatisticsView: View {
                     }
                 }
 
-                Section("This week") {
+                Section("莉企ｱ縺ｮ譌･蛻･譎る俣") {
                     Chart(weekSummaries) { summary in
                         BarMark(
-                            x: .value("Day", summary.label),
-                            y: .value("Minutes", summary.seconds / 60)
+                            x: .value("譖懈律", summary.label),
+                            y: .value("蛻・, summary.seconds / 60)
                         )
                         .foregroundStyle(.blue.gradient)
                     }
                     .frame(height: 200)
                 }
 
-                Section("Top tasks by time") {
+                Section("繧ｿ繧ｹ繧ｯ蛻･縺ｮ菴ｿ逕ｨ譎る俣") {
                     if topTasks.isEmpty {
-                        Text("No task-linked study sessions yet.")
+                        Text("繧ｿ繧ｹ繧ｯ縺ｫ邏舌▼縺・◆險倬鹸縺ｯ縺ｾ縺縺ゅｊ縺ｾ縺帙ｓ縲・)
                             .foregroundStyle(.secondary)
                     } else {
                         Chart(Array(topTasks.prefix(8))) { task in
                             BarMark(
-                                x: .value("Minutes", task.spentSeconds / 60),
-                                y: .value("Task", task.title)
+                                x: .value("蛻・, task.spentSeconds / 60),
+                                y: .value("繧ｿ繧ｹ繧ｯ", task.title)
                             )
                             .foregroundStyle(.green.gradient)
                         }
@@ -159,7 +152,7 @@ private struct StatisticsView: View {
                     }
                 }
             }
-            .navigationTitle("Stats")
+            .navigationTitle("邨ｱ險・)
         }
     }
 }

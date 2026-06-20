@@ -1,4 +1,4 @@
-import SwiftUI
+﻿import SwiftUI
 
 struct TaskRow: View {
     let task: StudyTask
@@ -17,9 +17,9 @@ struct TaskRow: View {
                         Text(subject.name)
                     }
                     Text(task.status.displayName)
-                    Text("Actual \(DateUtils.formatDuration(task.spentSeconds))")
+                    Text("螳溽ｸｾ \(DateUtils.formatDuration(task.spentSeconds))")
                     if task.estimatedSeconds > 0 {
-                        Text("Estimate \(DateUtils.formatDuration(task.estimatedSeconds))")
+                        Text("莠亥ｮ・\(DateUtils.formatDuration(task.estimatedSeconds))")
                     }
                 }
                 .font(.caption)

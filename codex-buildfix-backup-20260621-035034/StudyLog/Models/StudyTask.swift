@@ -10,12 +10,9 @@ enum TaskStatus: String, Codable, CaseIterable, Identifiable {
 
     var displayName: String {
         switch self {
-        case .notStarted:
-            return "Not started"
-        case .inProgress:
-            return "In progress"
-        case .completed:
-            return "Completed"
+        case .notStarted: "未着手"
+        case .inProgress: "進行中"
+        case .completed: "完了"
         }
     }
 }
@@ -29,12 +26,9 @@ enum TaskPriority: String, Codable, CaseIterable, Identifiable {
 
     var displayName: String {
         switch self {
-        case .low:
-            return "Low"
-        case .normal:
-            return "Normal"
-        case .high:
-            return "High"
+        case .low: "低"
+        case .normal: "普通"
+        case .high: "高"
         }
     }
 }

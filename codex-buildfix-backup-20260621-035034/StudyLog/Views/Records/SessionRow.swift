@@ -6,7 +6,7 @@ struct SessionRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
-                Text(session.subject?.name ?? "No subject")
+                Text(session.subject?.name ?? "教科なし")
                     .font(.headline)
                 Spacer()
                 Text(DateUtils.formatDuration(session.durationSeconds))
@@ -19,7 +19,7 @@ struct SessionRow: View {
                 }
                 Text(DateUtils.dateTimeFormatter.string(from: session.startedAt))
                 if session.isManual {
-                    Text("Manual")
+                    Text("手動")
                 }
             }
             .font(.caption)

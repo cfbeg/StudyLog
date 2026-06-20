@@ -1,4 +1,4 @@
-import SwiftData
+﻿import SwiftData
 import SwiftUI
 
 struct SubjectListView: View {
@@ -30,39 +30,39 @@ struct SubjectListView: View {
                             Button(role: .destructive) {
                                 subjectPendingDeletion = subject
                             } label: {
-                                Label("Delete", systemImage: "trash")
+                                Label("蜑企勁", systemImage: "trash")
                             }
 
                             Button {
                                 archive(subject)
                             } label: {
-                                Label("Archive", systemImage: "archivebox")
+                                Label("繧｢繝ｼ繧ｫ繧､繝・, systemImage: "archivebox")
                             }
                             .tint(.orange)
                         }
                     }
                     .onMove(perform: moveSubjects)
                 } header: {
-                    Text("Active")
+                    Text("陦ｨ遉ｺ荳ｭ")
                 } footer: {
-                    Text("Use Edit to reorder subjects. Deleting a subject keeps past study sessions as no-subject records.")
+                    Text("荳ｦ縺ｳ譖ｿ縺医・蜿ｳ荳翫・邱ｨ髮・°繧峨〒縺阪∪縺吶ょ炎髯､縺励※繧る℃蜴ｻ縺ｮ蜍牙ｼｷ繝ｭ繧ｰ縺ｯ谿九＠縺ｾ縺吶・)
                 }
 
                 if !archivedSubjects.isEmpty {
-                    Section("Archived") {
+                    Section("繧｢繝ｼ繧ｫ繧､繝・) {
                         ForEach(archivedSubjects) { subject in
                             SubjectSummaryRow(subject: subject, sessions: sessions)
                                 .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                                     Button(role: .destructive) {
                                         subjectPendingDeletion = subject
                                     } label: {
-                                        Label("Delete", systemImage: "trash")
+                                        Label("蜑企勁", systemImage: "trash")
                                     }
 
                                     Button {
                                         restore(subject)
                                     } label: {
-                                        Label("Restore", systemImage: "arrow.uturn.backward")
+                                        Label("謌ｻ縺・, systemImage: "arrow.uturn.backward")
                                     }
                                     .tint(.green)
                                 }
@@ -71,14 +71,10 @@ struct SubjectListView: View {
                 }
 
                 if activeSubjects.isEmpty {
-                    ContentUnavailableView(
-                        "No subjects",
-                        systemImage: "books.vertical",
-                        description: Text("Tap the plus button to add your first subject.")
-                    )
+                    ContentUnavailableView("謨咏ｧ代′縺ゅｊ縺ｾ縺帙ｓ", systemImage: "books.vertical", description: Text("蜿ｳ荳翫・霑ｽ蜉繝懊ち繝ｳ縺九ｉ謨咏ｧ代ｒ菴懈・縺ｧ縺阪∪縺吶・))
                 }
             }
-            .navigationTitle("Subjects")
+            .navigationTitle("謨咏ｧ・)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     EditButton()
@@ -88,7 +84,7 @@ struct SubjectListView: View {
                     Button {
                         isShowingEditor = true
                     } label: {
-                        Label("Add subject", systemImage: "plus")
+                        Label("謨咏ｧ代ｒ霑ｽ蜉", systemImage: "plus")
                     }
                 }
             }
@@ -96,16 +92,16 @@ struct SubjectListView: View {
                 SubjectEditorView()
             }
             .confirmationDialog(
-                "Delete this subject?",
+                "縺薙・謨咏ｧ代ｒ螳悟・縺ｫ蜑企勁縺励∪縺吶°・・,
                 item: $subjectPendingDeletion,
                 titleVisibility: .visible
             ) { subject in
-                Button("Delete permanently", role: .destructive) {
+                Button("螳悟・縺ｫ蜑企勁", role: .destructive) {
                     permanentlyDelete(subject)
                 }
-                Button("Cancel", role: .cancel) {}
+                Button("繧ｭ繝｣繝ｳ繧ｻ繝ｫ", role: .cancel) {}
             } message: { subject in
-                Text("\(subject.name) will be deleted. Past study sessions remain as no-subject records.")
+                Text("\(subject.name) 繧貞炎髯､縺励∪縺吶る℃蜴ｻ縺ｮ險倬鹸縺ｯ縲梧蕗遘代↑縺励阪→縺励※谿九ｊ縺ｾ縺吶・)
             }
         }
     }
@@ -117,20 +113,17 @@ struct SubjectListView: View {
             subject.displayOrder = index
             subject.updatedAt = Date()
         }
-        try? modelContext.save()
     }
 
     private func archive(_ subject: Subject) {
         subject.isArchived = true
         subject.updatedAt = Date()
-        try? modelContext.save()
     }
 
     private func restore(_ subject: Subject) {
         subject.isArchived = false
         subject.displayOrder = activeSubjects.count
         subject.updatedAt = Date()
-        try? modelContext.save()
     }
 
     private func permanentlyDelete(_ subject: Subject) {
@@ -176,7 +169,7 @@ private struct SubjectSummaryRow: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(subject.name)
                     .font(.headline)
-                Text("Today \(DateUtils.formatDuration(todaySeconds)) / Week \(DateUtils.formatDuration(weekSeconds))")
+                Text("莉頑律 \(DateUtils.formatDuration(todaySeconds)) / 莉企ｱ \(DateUtils.formatDuration(weekSeconds))")
                     .font(.caption)
                     .foregroundStyle(.secondary)
 

@@ -1,88 +1,84 @@
-﻿import SwiftData
+import SwiftData
 import SwiftUI
 
 struct SubjectEditorView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
 
-    private var subject: Subject?
+    private let subject: Subject?
 
     @State private var name: String
     @State private var colorHex: String
     @State private var iconName: String
     @State private var dailyGoalMinutes: Int
     @State private var weeklyGoalMinutes: Int
+    @State private var isArchived: Bool
+
+    private let iconChoices = ["book.closed.fill", "function", "text.book.closed.fill", "scroll.fill", "flask.fill", "atom", "globe.asia.australia.fill", "desktopcomputer"]
 
     init(subject: Subject? = nil) {
         self.subject = subject
         _name = State(initialValue: subject?.name ?? "")
-        _colorHex = State(initialValue: subject?.colorHex ?? ColorUtils.defaultSubjectColors[0])
+        _colorHex = State(initialValue: subject?.colorHex ?? ColorUtils.defaultSubjectColors.first ?? "#3B82F6")
         _iconName = State(initialValue: subject?.iconName ?? "book.closed.fill")
         _dailyGoalMinutes = State(initialValue: (subject?.dailyGoalSeconds ?? 0) / 60)
         _weeklyGoalMinutes = State(initialValue: (subject?.weeklyGoalSeconds ?? 0) / 60)
+        _isArchived = State(initialValue: subject?.isArchived ?? false)
     }
 
     var body: some View {
         NavigationStack {
             Form {
-                Section("蝓ｺ譛ｬ") {
-                    TextField("謨咏ｧ大錐", text: $name)
-                    TextField("SF Symbols 繧｢繧､繧ｳ繝ｳ蜷・, text: $iconName)
-                }
+                Section("Basic") {
+                    TextField("Subject name", text: $name)
 
-                Section("濶ｲ") {
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 44))]) {
-                        ForEach(ColorUtils.defaultSubjectColors, id: \.self) { hex in
-                            Button {
-                                colorHex = hex
-                            } label: {
-                                Circle()
-                                    .fill(ColorUtils.color(from: hex))
-                                    .frame(width: 34, height: 34)
-                                    .overlay {
-                                        if colorHex == hex {
-                                            Image(systemName: "checkmark")
-                                                .foregroundStyle(.white)
-                                                .bold()
-                                        }
-                                    }
-                            }
-                            .buttonStyle(.plain)
+                    Picker("Icon", selection: $iconName) {
+                        ForEach(iconChoices, id: \.self) { icon in
+                            Label(icon, systemImage: icon).tag(icon)
                         }
                     }
-                    TextField("#3B82F6", text: $colorHex)
-                        .textInputAutocapitalization(.characters)
-                }
 
-                Section("逶ｮ讓・) {
-                    Stepper("1譌･ \(dailyGoalMinutes) 蛻・, value: $dailyGoalMinutes, in: 0...600, step: 10)
-                    Stepper("1騾ｱ髢・\(weeklyGoalMinutes) 蛻・, value: $weeklyGoalMinutes, in: 0...5000, step: 30)
-                }
-
-                if let subject {
-                    Section {
-                        Button(role: .destructive) {
-                            subject.isArchived = true
-                            subject.updatedAt = Date()
-                            dismiss()
-                        } label: {
-                            Label("縺薙・謨咏ｧ代ｒ繧｢繝ｼ繧ｫ繧､繝・, systemImage: "archivebox")
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 44))]) {
+                        ForEach(ColorUtils.defaultSubjectColors, id: \.self) { hex in
+                            Circle()
+                                .fill(ColorUtils.color(from: hex))
+                                .frame(width: 34, height: 34)
+                                .overlay {
+                                    if colorHex == hex {
+                                        Image(systemName: "checkmark")
+                                            .foregroundStyle(.white)
+                                            .font(.caption.bold())
+                                    }
+                                }
+                                .onTapGesture {
+                                    colorHex = hex
+                                }
                         }
-                    } footer: {
-                        Text("螳悟・蜑企勁縺ｯ謨咏ｧ題ｩｳ邏ｰ縺ｾ縺溘・謨咏ｧ台ｸ隕ｧ縺ｮ繝｡繝九Η繝ｼ縺九ｉ螳溯｡後〒縺阪∪縺吶・)
+                    }
+                    .padding(.vertical, 4)
+                }
+
+                Section("Goals") {
+                    Stepper("Daily \(dailyGoalMinutes) min", value: $dailyGoalMinutes, in: 0...720, step: 15)
+                    Stepper("Weekly \(weeklyGoalMinutes) min", value: $weeklyGoalMinutes, in: 0...5000, step: 30)
+                }
+
+                if subject != nil {
+                    Section("Archive") {
+                        Toggle("Archive this subject", isOn: $isArchived)
                     }
                 }
             }
-            .navigationTitle(subject == nil ? "謨咏ｧ代ｒ霑ｽ蜉" : "謨咏ｧ代ｒ邱ｨ髮・)
+            .navigationTitle(subject == nil ? "Add subject" : "Edit subject")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("繧ｭ繝｣繝ｳ繧ｻ繝ｫ") {
+                    Button("Cancel") {
                         dismiss()
                     }
                 }
 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("菫晏ｭ・) {
+                    Button("Save") {
                         save()
                     }
                     .disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
@@ -100,6 +96,7 @@ struct SubjectEditorView: View {
             subject.iconName = iconName
             subject.dailyGoalSeconds = dailyGoalMinutes * 60
             subject.weeklyGoalSeconds = weeklyGoalMinutes * 60
+            subject.isArchived = isArchived
             subject.updatedAt = Date()
         } else {
             let subject = Subject(
@@ -112,6 +109,7 @@ struct SubjectEditorView: View {
             modelContext.insert(subject)
         }
 
+        try? modelContext.save()
         dismiss()
     }
 }

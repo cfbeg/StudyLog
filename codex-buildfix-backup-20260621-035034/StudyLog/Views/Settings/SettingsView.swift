@@ -1,4 +1,4 @@
-import SwiftData
+﻿import SwiftData
 import SwiftUI
 import UIKit
 
@@ -22,52 +22,52 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Goals") {
-                    Stepper("Daily goal \(dailyGoalMinutes) min", value: $dailyGoalMinutes, in: 0...720, step: 15)
-                    Toggle("Week starts on Monday", isOn: $weekStartsOnMonday)
+                Section("逶ｮ讓・) {
+                    Stepper("1譌･縺ｮ逶ｮ讓・\(dailyGoalMinutes) 蛻・, value: $dailyGoalMinutes, in: 0...720, step: 15)
+                    Toggle("騾ｱ縺ｮ髢句ｧ九ｒ譛域屆譌･縺ｫ縺吶ｋ", isOn: $weekStartsOnMonday)
                 }
 
-                Section("Notifications") {
-                    Toggle("Daily study reminder", isOn: $dailyReminderEnabled)
+                Section("騾夂衍") {
+                    Toggle("豈取律縺ｮ險倬鹸繝ｪ繝槭う繝ｳ繝繝ｼ", isOn: $dailyReminderEnabled)
                     if dailyReminderEnabled {
-                        DatePicker("Reminder time", selection: $reminderDate, displayedComponents: .hourAndMinute)
+                        DatePicker("騾夂衍譎ょ綾", selection: $reminderDate, displayedComponents: .hourAndMinute)
                     }
 
-                    Toggle("Task due-date reminders", isOn: $dueDateReminderEnabled)
+                    Toggle("繧ｿ繧ｹ繧ｯ譛滄剞蜑肴律縺ｮ騾夂衍", isOn: $dueDateReminderEnabled)
                 } footer: {
-                    Text("Notifications are scheduled locally on this device.")
+                    Text("騾夂衍縺ｯ遶ｯ譛ｫ蜀・□縺代〒邂｡逅・＠縺ｾ縺吶ょ・蝗槭が繝ｳ譎ゅ↓騾夂衍險ｱ蜿ｯ繧呈ｱゅａ縺ｾ縺吶・)
                 }
 
-                Section("Data") {
+                Section("繝・・繧ｿ") {
                     Button {
                         exportCSV()
                     } label: {
-                        Label("Export CSV", systemImage: "square.and.arrow.up")
+                        Label("CSV 繧ｨ繧ｯ繧ｹ繝昴・繝・, systemImage: "square.and.arrow.up")
                     }
                     .disabled(sessions.isEmpty)
 
                     Button(role: .destructive) {
                         isShowingDeleteAllConfirmation = true
                     } label: {
-                        Label("Delete all data", systemImage: "trash")
+                        Label("繝・・繧ｿ蜈ｨ蜑企勁", systemImage: "trash")
                     }
                     .disabled(subjects.isEmpty && tasks.isEmpty && sessions.isEmpty)
                 }
 
-                Section("Theme") {
-                    Picker("App theme", selection: $appTheme) {
-                        Text("System").tag("system")
-                        Text("Light").tag("light")
-                        Text("Dark").tag("dark")
+                Section("繝・・繝・) {
+                    Picker("繧｢繝励Μ繝・・繝・, selection: $appTheme) {
+                        Text("繧ｷ繧ｹ繝・Β").tag("system")
+                        Text("繝ｩ繧､繝・).tag("light")
+                        Text("繝繝ｼ繧ｯ").tag("dark")
                     }
                 }
 
-                Section("About") {
-                    Text("Create subjects, add tasks, start a timer, and review study time by subject and task.")
+                Section("縺薙・繧｢繝励Μ") {
+                    Text("謨咏ｧ代ｒ菴懊ｋ 竊・繧ｿ繧ｹ繧ｯ繧剃ｽ懊ｋ 竊・繧ｿ繧ｹ繧ｯ繧帝∈繧薙〒繧ｿ繧､繝槭・髢句ｧ九√→縺・≧霆ｽ縺・ｵ√ｌ繧剃ｸｭ蠢・↓縺励◆繧ｪ繝輔Λ繧､繝ｳ蟄ｦ鄙偵Ο繧ｰ縺ｧ縺吶・)
                         .foregroundStyle(.secondary)
                 }
             }
-            .navigationTitle("Settings")
+            .navigationTitle("險ｭ螳・)
             .onChange(of: dailyReminderEnabled) { _, enabled in
                 configureDailyReminder(enabled: enabled)
             }
@@ -90,13 +90,13 @@ struct SettingsView: View {
             } message: {
                 Text(alertMessage ?? "")
             }
-            .confirmationDialog("Delete all data?", isPresented: $isShowingDeleteAllConfirmation, titleVisibility: .visible) {
-                Button("Delete all data", role: .destructive) {
+            .confirmationDialog("縺吶∋縺ｦ縺ｮ繝・・繧ｿ繧貞炎髯､縺励∪縺吶°・・, isPresented: $isShowingDeleteAllConfirmation, titleVisibility: .visible) {
+                Button("縺吶∋縺ｦ蜑企勁", role: .destructive) {
                     deleteAllData()
                 }
-                Button("Cancel", role: .cancel) {}
+                Button("繧ｭ繝｣繝ｳ繧ｻ繝ｫ", role: .cancel) {}
             } message: {
-                Text("This removes all subjects, tasks, and study sessions. This cannot be undone.")
+                Text("謨咏ｧ代・繧ｿ繧ｹ繧ｯ繝ｻ蜍牙ｼｷ繝ｭ繧ｰ繧偵☆縺ｹ縺ｦ蜑企勁縺励∪縺吶ゅ％縺ｮ謫堺ｽ懊・蜈・↓謌ｻ縺帙∪縺帙ｓ縲・)
             }
         }
     }
@@ -105,17 +105,17 @@ struct SettingsView: View {
         do {
             exportFile = ExportFile(url: try ExportService.makeCSVFile(sessions: sessions))
         } catch {
-            alertMessage = "Failed to create CSV: \(error.localizedDescription)"
+            alertMessage = "CSV 縺ｮ菴懈・縺ｫ螟ｱ謨励＠縺ｾ縺励◆: \(error.localizedDescription)"
         }
     }
 
     private func configureDailyReminder(enabled: Bool) {
-        Task {
+        Swift.Task {
             do {
                 if enabled {
                     guard try await NotificationService.requestAuthorization() else {
                         dailyReminderEnabled = false
-                        alertMessage = "Notification permission was not granted."
+                        alertMessage = "騾夂衍縺瑚ｨｱ蜿ｯ縺輔ｌ縺ｾ縺帙ｓ縺ｧ縺励◆縲・
                         return
                     }
 
@@ -126,18 +126,18 @@ struct SettingsView: View {
                 }
             } catch {
                 dailyReminderEnabled = false
-                alertMessage = "Failed to configure notification: \(error.localizedDescription)"
+                alertMessage = "騾夂衍險ｭ螳壹↓螟ｱ謨励＠縺ｾ縺励◆: \(error.localizedDescription)"
             }
         }
     }
 
     private func configureDueDateReminders(enabled: Bool) {
-        Task {
+        Swift.Task {
             do {
                 if enabled {
                     guard try await NotificationService.requestAuthorization() else {
                         dueDateReminderEnabled = false
-                        alertMessage = "Notification permission was not granted."
+                        alertMessage = "騾夂衍縺瑚ｨｱ蜿ｯ縺輔ｌ縺ｾ縺帙ｓ縺ｧ縺励◆縲・
                         return
                     }
                     try await NotificationService.rescheduleDueDateNotifications(for: tasks)
@@ -146,7 +146,7 @@ struct SettingsView: View {
                 }
             } catch {
                 dueDateReminderEnabled = false
-                alertMessage = "Failed to configure due-date reminders: \(error.localizedDescription)"
+                alertMessage = "譛滄剞騾夂衍縺ｮ險ｭ螳壹↓螟ｱ謨励＠縺ｾ縺励◆: \(error.localizedDescription)"
             }
         }
     }
