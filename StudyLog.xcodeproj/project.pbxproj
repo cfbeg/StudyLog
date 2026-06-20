@@ -1,0 +1,320 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0000000000000000000003E9 /* StudyLogApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000000000000000003E8 /* StudyLogApp.swift */; };
+		0000000000000000000003EB /* StudySession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000000000000000003EA /* StudySession.swift */; };
+		0000000000000000000003ED /* StudyTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000000000000000003EC /* StudyTask.swift */; };
+		0000000000000000000003EF /* Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000000000000000003EE /* Subject.swift */; };
+		0000000000000000000003F1 /* ExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000000000000000003F0 /* ExportService.swift */; };
+		0000000000000000000003F3 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000000000000000003F2 /* NotificationService.swift */; };
+		0000000000000000000003F5 /* StatisticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000000000000000003F4 /* StatisticsService.swift */; };
+		0000000000000000000003F7 /* TimerEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000000000000000003F6 /* TimerEngine.swift */; };
+		0000000000000000000003F9 /* ColorUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000000000000000003F8 /* ColorUtils.swift */; };
+		0000000000000000000003FB /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000000000000000003FA /* DateUtils.swift */; };
+		0000000000000000000003FD /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000000000000000003FC /* HomeView.swift */; };
+		0000000000000000000003FF /* ManualRecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000000000000000003FE /* ManualRecordView.swift */; };
+		000000000000000000000401 /* RecordListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000400 /* RecordListView.swift */; };
+		000000000000000000000403 /* SessionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000402 /* SessionRow.swift */; };
+		000000000000000000000405 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000404 /* SettingsView.swift */; };
+		000000000000000000000407 /* SubjectDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000406 /* SubjectDetailView.swift */; };
+		000000000000000000000409 /* SubjectEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000408 /* SubjectEditorView.swift */; };
+		00000000000000000000040B /* SubjectListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000040A /* SubjectListView.swift */; };
+		00000000000000000000040D /* TaskDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000040C /* TaskDetailView.swift */; };
+		00000000000000000000040F /* TaskEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000040E /* TaskEditorView.swift */; };
+		000000000000000000000411 /* TaskRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000410 /* TaskRow.swift */; };
+		000000000000000000000413 /* StudyTimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000412 /* StudyTimerView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0000000000000000000003E8 /* StudyLogApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyLog/App/StudyLogApp.swift; sourceTree = "<group>"; };
+		0000000000000000000003EA /* StudySession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyLog/Models/StudySession.swift; sourceTree = "<group>"; };
+		0000000000000000000003EC /* StudyTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyLog/Models/StudyTask.swift; sourceTree = "<group>"; };
+		0000000000000000000003EE /* Subject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyLog/Models/Subject.swift; sourceTree = "<group>"; };
+		0000000000000000000003F0 /* ExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyLog/Services/ExportService.swift; sourceTree = "<group>"; };
+		0000000000000000000003F2 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyLog/Services/NotificationService.swift; sourceTree = "<group>"; };
+		0000000000000000000003F4 /* StatisticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyLog/Services/StatisticsService.swift; sourceTree = "<group>"; };
+		0000000000000000000003F6 /* TimerEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyLog/Services/TimerEngine.swift; sourceTree = "<group>"; };
+		0000000000000000000003F8 /* ColorUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyLog/Utilities/ColorUtils.swift; sourceTree = "<group>"; };
+		0000000000000000000003FA /* DateUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyLog/Utilities/DateUtils.swift; sourceTree = "<group>"; };
+		0000000000000000000003FC /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyLog/Views/Home/HomeView.swift; sourceTree = "<group>"; };
+		0000000000000000000003FE /* ManualRecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyLog/Views/Records/ManualRecordView.swift; sourceTree = "<group>"; };
+		000000000000000000000400 /* RecordListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyLog/Views/Records/RecordListView.swift; sourceTree = "<group>"; };
+		000000000000000000000402 /* SessionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyLog/Views/Records/SessionRow.swift; sourceTree = "<group>"; };
+		000000000000000000000404 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyLog/Views/Settings/SettingsView.swift; sourceTree = "<group>"; };
+		000000000000000000000406 /* SubjectDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyLog/Views/Subjects/SubjectDetailView.swift; sourceTree = "<group>"; };
+		000000000000000000000408 /* SubjectEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyLog/Views/Subjects/SubjectEditorView.swift; sourceTree = "<group>"; };
+		00000000000000000000040A /* SubjectListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyLog/Views/Subjects/SubjectListView.swift; sourceTree = "<group>"; };
+		00000000000000000000040C /* TaskDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyLog/Views/Tasks/TaskDetailView.swift; sourceTree = "<group>"; };
+		00000000000000000000040E /* TaskEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyLog/Views/Tasks/TaskEditorView.swift; sourceTree = "<group>"; };
+		000000000000000000000410 /* TaskRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyLog/Views/Tasks/TaskRow.swift; sourceTree = "<group>"; };
+		000000000000000000000412 /* StudyTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyLog/Views/Timer/StudyTimerView.swift; sourceTree = "<group>"; };
+		000000000000000000000418 /* StudyLog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StudyLog.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		00000000000000000000041B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		000000000000000000000415 = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000000417 /* StudyLog */,
+				000000000000000000000416 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		000000000000000000000416 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000000418 /* StudyLog.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		000000000000000000000417 /* StudyLog */ = {
+			isa = PBXGroup;
+			children = (
+				0000000000000000000003E8 /* StudyLogApp.swift */,
+				0000000000000000000003EA /* StudySession.swift */,
+				0000000000000000000003EC /* StudyTask.swift */,
+				0000000000000000000003EE /* Subject.swift */,
+				0000000000000000000003F0 /* ExportService.swift */,
+				0000000000000000000003F2 /* NotificationService.swift */,
+				0000000000000000000003F4 /* StatisticsService.swift */,
+				0000000000000000000003F6 /* TimerEngine.swift */,
+				0000000000000000000003F8 /* ColorUtils.swift */,
+				0000000000000000000003FA /* DateUtils.swift */,
+				0000000000000000000003FC /* HomeView.swift */,
+				0000000000000000000003FE /* ManualRecordView.swift */,
+				000000000000000000000400 /* RecordListView.swift */,
+				000000000000000000000402 /* SessionRow.swift */,
+				000000000000000000000404 /* SettingsView.swift */,
+				000000000000000000000406 /* SubjectDetailView.swift */,
+				000000000000000000000408 /* SubjectEditorView.swift */,
+				00000000000000000000040A /* SubjectListView.swift */,
+				00000000000000000000040C /* TaskDetailView.swift */,
+				00000000000000000000040E /* TaskEditorView.swift */,
+				000000000000000000000410 /* TaskRow.swift */,
+				000000000000000000000412 /* StudyTimerView.swift */,
+			);
+			name = StudyLog;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		000000000000000000000419 /* StudyLog */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 00000000000000000000041E /* Build configuration list for PBXNativeTarget "StudyLog" */;
+			buildPhases = (
+				00000000000000000000041A /* Sources */,
+				00000000000000000000041B /* Frameworks */,
+				00000000000000000000041C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StudyLog;
+			productName = StudyLog;
+			productReference = 000000000000000000000418 /* StudyLog.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		000000000000000000000414 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					000000000000000000000419 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = 00000000000000000000041D /* Build configuration list for PBXProject "StudyLog" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = ja;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				ja,
+				en,
+				Base,
+			);
+			mainGroup = 000000000000000000000415;
+			productRefGroup = 000000000000000000000416 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				000000000000000000000419 /* StudyLog */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		00000000000000000000041C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		00000000000000000000041A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0000000000000000000003E9 /* StudyLogApp.swift in Sources */,
+				0000000000000000000003EB /* StudySession.swift in Sources */,
+				0000000000000000000003ED /* StudyTask.swift in Sources */,
+				0000000000000000000003EF /* Subject.swift in Sources */,
+				0000000000000000000003F1 /* ExportService.swift in Sources */,
+				0000000000000000000003F3 /* NotificationService.swift in Sources */,
+				0000000000000000000003F5 /* StatisticsService.swift in Sources */,
+				0000000000000000000003F7 /* TimerEngine.swift in Sources */,
+				0000000000000000000003F9 /* ColorUtils.swift in Sources */,
+				0000000000000000000003FB /* DateUtils.swift in Sources */,
+				0000000000000000000003FD /* HomeView.swift in Sources */,
+				0000000000000000000003FF /* ManualRecordView.swift in Sources */,
+				000000000000000000000401 /* RecordListView.swift in Sources */,
+				000000000000000000000403 /* SessionRow.swift in Sources */,
+				000000000000000000000405 /* SettingsView.swift in Sources */,
+				000000000000000000000407 /* SubjectDetailView.swift in Sources */,
+				000000000000000000000409 /* SubjectEditorView.swift in Sources */,
+				00000000000000000000040B /* SubjectListView.swift in Sources */,
+				00000000000000000000040D /* TaskDetailView.swift in Sources */,
+				00000000000000000000040F /* TaskEditorView.swift in Sources */,
+				000000000000000000000411 /* TaskRow.swift in Sources */,
+				000000000000000000000413 /* StudyTimerView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		00000000000000000000041F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		000000000000000000000420 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		000000000000000000000421 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = StudyLog;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.studylog;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		000000000000000000000422 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = StudyLog;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.studylog;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		00000000000000000000041D /* Build configuration list for PBXProject "StudyLog" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				00000000000000000000041F /* Debug */,
+				000000000000000000000420 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		00000000000000000000041E /* Build configuration list for PBXNativeTarget "StudyLog" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				000000000000000000000421 /* Debug */,
+				000000000000000000000422 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 000000000000000000000414 /* Project object */;
+}
