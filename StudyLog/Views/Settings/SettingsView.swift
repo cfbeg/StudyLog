@@ -19,54 +19,37 @@ struct SettingsView: View {
     @State private var alertMessage: String?
     @State private var isShowingDeleteAllConfirmation = false
 
+    private var canExportCSV: Bool {
+        !sessions.isEmpty
+    }
+
+    private var canDeleteAllData: Bool {
+        !(subjects.isEmpty && tasks.isEmpty && sessions.isEmpty)
+    }
+
+    private var alertBinding: Binding<Bool> {
+        Binding(
+            get: { alertMessage != nil },
+            set: { if !$0 { alertMessage = nil } }
+        )
+    }
+
     var body: some View {
         NavigationStack {
-            Form {
-                Section("Goals") {
-                    Stepper("Daily goal \(dailyGoalMinutes) min", value: $dailyGoalMinutes, in: 0...720, step: 15)
-                    Toggle("Week starts on Monday", isOn: $weekStartsOnMonday)
+            SettingsForm(
+                dailyGoalMinutes: $dailyGoalMinutes,
+                weekStartsOnMonday: $weekStartsOnMonday,
+                appTheme: $appTheme,
+                dailyReminderEnabled: $dailyReminderEnabled,
+                dueDateReminderEnabled: $dueDateReminderEnabled,
+                reminderDate: $reminderDate,
+                canExportCSV: canExportCSV,
+                canDeleteAllData: canDeleteAllData,
+                exportCSV: exportCSV,
+                showDeleteAllConfirmation: {
+                    isShowingDeleteAllConfirmation = true
                 }
-
-                Section("Notifications") {
-                    Toggle("Daily study reminder", isOn: $dailyReminderEnabled)
-                    if dailyReminderEnabled {
-                        DatePicker("Reminder time", selection: $reminderDate, displayedComponents: .hourAndMinute)
-                    }
-
-                    Toggle("Task due-date reminders", isOn: $dueDateReminderEnabled)
-                } footer: {
-                    Text("Notifications are scheduled locally on this device.")
-                }
-
-                Section("Data") {
-                    Button {
-                        exportCSV()
-                    } label: {
-                        Label("Export CSV", systemImage: "square.and.arrow.up")
-                    }
-                    .disabled(sessions.isEmpty)
-
-                    Button(role: .destructive) {
-                        isShowingDeleteAllConfirmation = true
-                    } label: {
-                        Label("Delete all data", systemImage: "trash")
-                    }
-                    .disabled(subjects.isEmpty && tasks.isEmpty && sessions.isEmpty)
-                }
-
-                Section("Theme") {
-                    Picker("App theme", selection: $appTheme) {
-                        Text("System").tag("system")
-                        Text("Light").tag("light")
-                        Text("Dark").tag("dark")
-                    }
-                }
-
-                Section("About") {
-                    Text("Create subjects, add tasks, start a timer, and review study time by subject and task.")
-                        .foregroundStyle(.secondary)
-                }
-            }
+            )
             .navigationTitle("Settings")
             .onChange(of: dailyReminderEnabled) { _, enabled in
                 configureDailyReminder(enabled: enabled)
@@ -82,10 +65,7 @@ struct SettingsView: View {
             .sheet(item: $exportFile) { exportFile in
                 ShareSheet(activityItems: [exportFile.url])
             }
-            .alert("StudyLog", isPresented: Binding(
-                get: { alertMessage != nil },
-                set: { if !$0 { alertMessage = nil } }
-            )) {
+            .alert("StudyLog", isPresented: alertBinding) {
                 Button("OK", role: .cancel) {}
             } message: {
                 Text(alertMessage ?? "")
@@ -132,6 +112,8 @@ struct SettingsView: View {
     }
 
     private func configureDueDateReminders(enabled: Bool) {
+        let currentTasks = tasks
+
         Task {
             do {
                 if enabled {
@@ -140,7 +122,7 @@ struct SettingsView: View {
                         alertMessage = "Notification permission was not granted."
                         return
                     }
-                    try await NotificationService.rescheduleDueDateNotifications(for: tasks)
+                    try await NotificationService.rescheduleDueDateNotifications(for: currentTasks)
                 } else {
                     await NotificationService.cancelDueDateNotifications()
                 }
@@ -162,6 +144,127 @@ struct SettingsView: View {
             modelContext.delete(subject)
         }
         try? modelContext.save()
+    }
+}
+
+private struct SettingsForm: View {
+    @Binding var dailyGoalMinutes: Int
+    @Binding var weekStartsOnMonday: Bool
+    @Binding var appTheme: String
+    @Binding var dailyReminderEnabled: Bool
+    @Binding var dueDateReminderEnabled: Bool
+    @Binding var reminderDate: Date
+
+    let canExportCSV: Bool
+    let canDeleteAllData: Bool
+    let exportCSV: () -> Void
+    let showDeleteAllConfirmation: () -> Void
+
+    var body: some View {
+        Form {
+            SettingsGoalsSection(
+                dailyGoalMinutes: $dailyGoalMinutes,
+                weekStartsOnMonday: $weekStartsOnMonday
+            )
+
+            SettingsNotificationsSection(
+                dailyReminderEnabled: $dailyReminderEnabled,
+                dueDateReminderEnabled: $dueDateReminderEnabled,
+                reminderDate: $reminderDate
+            )
+
+            SettingsDataSection(
+                canExportCSV: canExportCSV,
+                canDeleteAllData: canDeleteAllData,
+                exportCSV: exportCSV,
+                showDeleteAllConfirmation: showDeleteAllConfirmation
+            )
+
+            SettingsThemeSection(appTheme: $appTheme)
+            SettingsAboutSection()
+        }
+    }
+}
+
+private struct SettingsGoalsSection: View {
+    @Binding var dailyGoalMinutes: Int
+    @Binding var weekStartsOnMonday: Bool
+
+    var body: some View {
+        Section("Goals") {
+            Stepper("Daily goal \(dailyGoalMinutes) min", value: $dailyGoalMinutes, in: 0...720, step: 15)
+            Toggle("Week starts on Monday", isOn: $weekStartsOnMonday)
+        }
+    }
+}
+
+private struct SettingsNotificationsSection: View {
+    @Binding var dailyReminderEnabled: Bool
+    @Binding var dueDateReminderEnabled: Bool
+    @Binding var reminderDate: Date
+
+    var body: some View {
+        Section {
+            Toggle("Daily study reminder", isOn: $dailyReminderEnabled)
+
+            if dailyReminderEnabled {
+                DatePicker("Reminder time", selection: $reminderDate, displayedComponents: .hourAndMinute)
+            }
+
+            Toggle("Task due-date reminders", isOn: $dueDateReminderEnabled)
+        } header: {
+            Text("Notifications")
+        } footer: {
+            Text("Notifications are scheduled locally on this device.")
+        }
+    }
+}
+
+private struct SettingsDataSection: View {
+    let canExportCSV: Bool
+    let canDeleteAllData: Bool
+    let exportCSV: () -> Void
+    let showDeleteAllConfirmation: () -> Void
+
+    var body: some View {
+        Section("Data") {
+            Button {
+                exportCSV()
+            } label: {
+                Label("Export CSV", systemImage: "square.and.arrow.up")
+            }
+            .disabled(!canExportCSV)
+
+            Button(role: .destructive) {
+                showDeleteAllConfirmation()
+            } label: {
+                Label("Delete all data", systemImage: "trash")
+            }
+            .disabled(!canDeleteAllData)
+        }
+    }
+}
+
+private struct SettingsThemeSection: View {
+    @Binding var appTheme: String
+
+    var body: some View {
+        Section("Theme") {
+            Picker("App theme", selection: $appTheme) {
+                Text("System").tag("system")
+                Text("Light").tag("light")
+                Text("Dark").tag("dark")
+            }
+        }
+    }
+}
+
+private struct SettingsAboutSection: View {
+    var body: some View {
+        Section("About") {
+            Text("Create subjects, add tasks, start a timer, and review study time by subject and task.")
+                .foregroundStyle(.secondary)
+        }
     }
 }
 

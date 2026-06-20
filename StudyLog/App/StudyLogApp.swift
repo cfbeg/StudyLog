@@ -82,84 +82,154 @@ private struct StatisticsView: View {
 
     var body: some View {
         NavigationStack {
-            List {
-                Section("Today by subject") {
-                    if todaySubjectSummaries.isEmpty {
-                        ContentUnavailableView(
-                            "No study logged today",
-                            systemImage: "chart.pie",
-                            description: Text("Start the timer or add a manual record to see the chart.")
-                        )
-                    } else {
-                        Chart(todaySubjectSummaries) { summary in
-                            SectorMark(
-                                angle: .value("Seconds", summary.seconds),
-                                innerRadius: .ratio(0.55),
-                                angularInset: 2
-                            )
-                            .foregroundStyle(ColorUtils.color(from: summary.colorHex))
-                            .annotation(position: .overlay) {
-                                if summary.seconds >= 600 {
-                                    Text(summary.subjectName)
-                                        .font(.caption2.bold())
-                                        .foregroundStyle(.white)
-                                }
-                            }
-                        }
-                        .frame(height: 220)
+            StatisticsList(
+                todaySubjectSummaries: todaySubjectSummaries,
+                weekSummaries: weekSummaries,
+                topTasks: Array(topTasks.prefix(8))
+            )
+            .navigationTitle("Stats")
+        }
+    }
+}
 
-                        ForEach(todaySubjectSummaries) { summary in
-                            HStack {
-                                Circle()
-                                    .fill(ColorUtils.color(from: summary.colorHex))
-                                    .frame(width: 10, height: 10)
-                                Text(summary.subjectName)
-                                Spacer()
-                                Text(DateUtils.formatDuration(summary.seconds))
-                                    .foregroundStyle(.secondary)
-                            }
-                        }
-                    }
-                }
+private struct StatisticsList: View {
+    let todaySubjectSummaries: [SubjectTimeSummary]
+    let weekSummaries: [DailyTimeSummary]
+    let topTasks: [StudyTask]
 
-                Section("This week") {
-                    Chart(weekSummaries) { summary in
-                        BarMark(
-                            x: .value("Day", summary.label),
-                            y: .value("Minutes", summary.seconds / 60)
-                        )
-                        .foregroundStyle(.blue.gradient)
-                    }
-                    .frame(height: 200)
-                }
+    var body: some View {
+        List {
+            TodaySubjectChartSection(summaries: todaySubjectSummaries)
+            WeeklyBarChartSection(summaries: weekSummaries)
+            TopTaskChartSection(tasks: topTasks)
+        }
+    }
+}
 
-                Section("Top tasks by time") {
-                    if topTasks.isEmpty {
-                        Text("No task-linked study sessions yet.")
-                            .foregroundStyle(.secondary)
-                    } else {
-                        Chart(Array(topTasks.prefix(8))) { task in
-                            BarMark(
-                                x: .value("Minutes", task.spentSeconds / 60),
-                                y: .value("Task", task.title)
-                            )
-                            .foregroundStyle(.green.gradient)
-                        }
-                        .frame(height: max(180, CGFloat(min(topTasks.count, 8)) * 36))
+private struct TodaySubjectChartSection: View {
+    let summaries: [SubjectTimeSummary]
 
-                        ForEach(Array(topTasks.prefix(8))) { task in
-                            HStack {
-                                Text(task.title)
-                                    .lineLimit(1)
-                                Spacer()
-                                Text(DateUtils.formatDuration(task.spentSeconds))
-                                    .foregroundStyle(.secondary)
-                            }
-                        }
-                    }
+    var body: some View {
+        Section("Today by subject") {
+            if summaries.isEmpty {
+                ContentUnavailableView(
+                    "No study logged today",
+                    systemImage: "chart.pie",
+                    description: Text("Start the timer or add a manual record to see the chart.")
+                )
+            } else {
+                TodaySubjectDonutChart(summaries: summaries)
+                TodaySubjectLegend(summaries: summaries)
+            }
+        }
+    }
+}
+
+private struct TodaySubjectDonutChart: View {
+    let summaries: [SubjectTimeSummary]
+
+    var body: some View {
+        Chart(summaries) { summary in
+            SectorMark(
+                angle: .value("Seconds", summary.seconds),
+                innerRadius: .ratio(0.55),
+                angularInset: 2
+            )
+            .foregroundStyle(ColorUtils.color(from: summary.colorHex))
+            .annotation(position: .overlay) {
+                if summary.seconds >= 600 {
+                    Text(summary.subjectName)
+                        .font(.caption2.bold())
+                        .foregroundStyle(.white)
                 }
             }
-            .navigationTitle("Stats")
+        }
+        .frame(height: 220)
+    }
+}
+
+private struct TodaySubjectLegend: View {
+    let summaries: [SubjectTimeSummary]
+
+    var body: some View {
+        ForEach(summaries) { summary in
+            HStack {
+                Circle()
+                    .fill(ColorUtils.color(from: summary.colorHex))
+                    .frame(width: 10, height: 10)
+                Text(summary.subjectName)
+                Spacer()
+                Text(DateUtils.formatDuration(summary.seconds))
+                    .foregroundStyle(.secondary)
+            }
+        }
+    }
+}
+
+private struct WeeklyBarChartSection: View {
+    let summaries: [DailyTimeSummary]
+
+    var body: some View {
+        Section("This week") {
+            Chart(summaries) { summary in
+                BarMark(
+                    x: .value("Day", summary.label),
+                    y: .value("Minutes", summary.seconds / 60)
+                )
+                .foregroundStyle(.blue.gradient)
+            }
+            .frame(height: 200)
+        }
+    }
+}
+
+private struct TopTaskChartSection: View {
+    let tasks: [StudyTask]
+
+    private var chartHeight: CGFloat {
+        max(180, CGFloat(tasks.count) * 36)
+    }
+
+    var body: some View {
+        Section("Top tasks by time") {
+            if tasks.isEmpty {
+                Text("No task-linked study sessions yet.")
+                    .foregroundStyle(.secondary)
+            } else {
+                TopTaskBarChart(tasks: tasks)
+                    .frame(height: chartHeight)
+                TopTaskLegend(tasks: tasks)
+            }
+        }
+    }
+}
+
+private struct TopTaskBarChart: View {
+    let tasks: [StudyTask]
+
+    var body: some View {
+        Chart(tasks) { task in
+            BarMark(
+                x: .value("Minutes", task.spentSeconds / 60),
+                y: .value("Task", task.title)
+            )
+            .foregroundStyle(.green.gradient)
+        }
+    }
+}
+
+private struct TopTaskLegend: View {
+    let tasks: [StudyTask]
+
+    var body: some View {
+        ForEach(tasks) { task in
+            HStack {
+                Text(task.title)
+                    .lineLimit(1)
+                Spacer()
+                Text(DateUtils.formatDuration(task.spentSeconds))
+                    .foregroundStyle(.secondary)
+            }
         }
     }
 }

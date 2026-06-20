@@ -31,123 +31,29 @@ struct SubjectDetailView: View {
 
     var body: some View {
         List {
-            Section {
-                VStack(alignment: .leading, spacing: 10) {
-                    Label(subject.name, systemImage: subject.iconName)
-                        .font(.title2.bold())
-                        .foregroundStyle(ColorUtils.color(from: subject.colorHex))
+            SubjectOverviewSection(
+                subject: subject,
+                allSessions: allSessions,
+                startStudy: { isShowingTimer = true },
+                addTask: { isShowingTaskEditor = true }
+            )
 
-                    HStack {
-                        MetricPill(title: "Today", seconds: StatisticsService.totalSecondsToday(for: subject, sessions: allSessions))
-                        MetricPill(title: "Week", seconds: StatisticsService.totalSecondsThisWeek(for: subject, sessions: allSessions))
-                        MetricPill(title: "Total", seconds: StatisticsService.totalSeconds(for: subject, sessions: allSessions))
-                    }
+            SubjectOpenTasksSection(tasks: pendingTasks)
 
-                    if subject.dailyGoalSeconds > 0 {
-                        ProgressView(
-                            value: StatisticsService.progressRatio(
-                                seconds: StatisticsService.totalSecondsToday(for: subject, sessions: allSessions),
-                                goalSeconds: subject.dailyGoalSeconds
-                            )
-                        ) {
-                            Text("Daily goal \(DateUtils.formatDuration(subject.dailyGoalSeconds))")
-                        }
-                        .tint(ColorUtils.color(from: subject.colorHex))
-                    }
-                }
-                .padding(.vertical, 6)
+            SubjectCompletedTasksSection(
+                tasks: completedTasks,
+                isShowingCompletedTasks: $isShowingCompletedTasks
+            )
 
-                Button {
-                    isShowingTimer = true
-                } label: {
-                    Label("Start studying this subject", systemImage: "play.circle.fill")
-                }
-
-                Button {
-                    isShowingTaskEditor = true
-                } label: {
-                    Label("Add task", systemImage: "checklist")
-                }
-            }
-
-            Section("Open tasks") {
-                if pendingTasks.isEmpty {
-                    Text("No open tasks.")
-                        .foregroundStyle(.secondary)
-                } else {
-                    ForEach(pendingTasks) { task in
-                        NavigationLink {
-                            TaskDetailView(task: task)
-                        } label: {
-                            TaskRow(task: task, showsSubject: false)
-                        }
-                    }
-                }
-            }
-
-            Section {
-                Button {
-                    withAnimation {
-                        isShowingCompletedTasks.toggle()
-                    }
-                } label: {
-                    Label(
-                        isShowingCompletedTasks ? "Hide completed" : "Show completed (\(completedTasks.count))",
-                        systemImage: isShowingCompletedTasks ? "chevron.up.circle" : "chevron.down.circle"
-                    )
-                }
-
-                if isShowingCompletedTasks {
-                    if completedTasks.isEmpty {
-                        Text("No completed tasks yet.")
-                            .foregroundStyle(.secondary)
-                    } else {
-                        ForEach(completedTasks) { task in
-                            NavigationLink {
-                                TaskDetailView(task: task)
-                            } label: {
-                                TaskRow(task: task, showsSubject: false)
-                            }
-                        }
-                    }
-                }
-            } header: {
-                Text("Completed")
-            }
-
-            Section("Study history") {
-                if subjectSessions.isEmpty {
-                    Text("No sessions for this subject yet.")
-                        .foregroundStyle(.secondary)
-                } else {
-                    ForEach(subjectSessions.prefix(10)) { session in
-                        SessionRow(session: session)
-                    }
-                }
-            }
+            SubjectHistorySection(sessions: Array(subjectSessions.prefix(10)))
         }
         .navigationTitle(subject.name)
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Menu {
-                    Button("Edit", systemImage: "pencil") {
-                        isShowingSubjectEditor = true
-                    }
-
-                    Button("Archive", systemImage: "archivebox") {
-                        subject.isArchived = true
-                        subject.updatedAt = Date()
-                        try? modelContext.save()
-                        dismiss()
-                    }
-
-                    Button("Delete permanently", systemImage: "trash", role: .destructive) {
-                        isShowingDeleteConfirmation = true
-                    }
-                } label: {
-                    Image(systemName: "ellipsis.circle")
-                }
-            }
+            SubjectDetailToolbar(
+                edit: { isShowingSubjectEditor = true },
+                archive: archiveSubject,
+                requestDelete: { isShowingDeleteConfirmation = true }
+            )
         }
         .sheet(isPresented: $isShowingTaskEditor) {
             TaskEditorView(subject: subject)
@@ -168,6 +74,13 @@ struct SubjectDetailView: View {
         }
     }
 
+    private func archiveSubject() {
+        subject.isArchived = true
+        subject.updatedAt = Date()
+        try? modelContext.save()
+        dismiss()
+    }
+
     private func permanentlyDeleteSubject() {
         let subjectTasks = Array(subject.tasks)
         let subjectSessions = Array(subject.sessions)
@@ -186,6 +99,179 @@ struct SubjectDetailView: View {
         modelContext.delete(subject)
         try? modelContext.save()
         dismiss()
+    }
+}
+
+private struct SubjectOverviewSection: View {
+    let subject: Subject
+    let allSessions: [StudySession]
+    let startStudy: () -> Void
+    let addTask: () -> Void
+
+    private var todaySeconds: Int {
+        StatisticsService.totalSecondsToday(for: subject, sessions: allSessions)
+    }
+
+    private var weekSeconds: Int {
+        StatisticsService.totalSecondsThisWeek(for: subject, sessions: allSessions)
+    }
+
+    private var totalSeconds: Int {
+        StatisticsService.totalSeconds(for: subject, sessions: allSessions)
+    }
+
+    private var subjectColor: Color {
+        ColorUtils.color(from: subject.colorHex)
+    }
+
+    var body: some View {
+        Section {
+            VStack(alignment: .leading, spacing: 10) {
+                Label(subject.name, systemImage: subject.iconName)
+                    .font(.title2.bold())
+                    .foregroundStyle(subjectColor)
+
+                HStack {
+                    MetricPill(title: "Today", seconds: todaySeconds)
+                    MetricPill(title: "Week", seconds: weekSeconds)
+                    MetricPill(title: "Total", seconds: totalSeconds)
+                }
+
+                if subject.dailyGoalSeconds > 0 {
+                    ProgressView(
+                        value: StatisticsService.progressRatio(
+                            seconds: todaySeconds,
+                            goalSeconds: subject.dailyGoalSeconds
+                        )
+                    ) {
+                        Text("Daily goal \(DateUtils.formatDuration(subject.dailyGoalSeconds))")
+                    }
+                    .tint(subjectColor)
+                }
+            }
+            .padding(.vertical, 6)
+
+            Button {
+                startStudy()
+            } label: {
+                Label("Start studying this subject", systemImage: "play.circle.fill")
+            }
+
+            Button {
+                addTask()
+            } label: {
+                Label("Add task", systemImage: "checklist")
+            }
+        }
+    }
+}
+
+private struct SubjectOpenTasksSection: View {
+    let tasks: [StudyTask]
+
+    var body: some View {
+        Section("Open tasks") {
+            if tasks.isEmpty {
+                Text("No open tasks.")
+                    .foregroundStyle(.secondary)
+            } else {
+                ForEach(tasks) { task in
+                    NavigationLink {
+                        TaskDetailView(task: task)
+                    } label: {
+                        TaskRow(task: task, showsSubject: false)
+                    }
+                }
+            }
+        }
+    }
+}
+
+private struct SubjectCompletedTasksSection: View {
+    let tasks: [StudyTask]
+    @Binding var isShowingCompletedTasks: Bool
+
+    var body: some View {
+        Section {
+            Button {
+                withAnimation {
+                    isShowingCompletedTasks.toggle()
+                }
+            } label: {
+                Label(
+                    isShowingCompletedTasks ? "Hide completed" : "Show completed (\(tasks.count))",
+                    systemImage: isShowingCompletedTasks ? "chevron.up.circle" : "chevron.down.circle"
+                )
+            }
+
+            if isShowingCompletedTasks {
+                CompletedTaskList(tasks: tasks)
+            }
+        } header: {
+            Text("Completed")
+        }
+    }
+}
+
+private struct CompletedTaskList: View {
+    let tasks: [StudyTask]
+
+    var body: some View {
+        if tasks.isEmpty {
+            Text("No completed tasks yet.")
+                .foregroundStyle(.secondary)
+        } else {
+            ForEach(tasks) { task in
+                NavigationLink {
+                    TaskDetailView(task: task)
+                } label: {
+                    TaskRow(task: task, showsSubject: false)
+                }
+            }
+        }
+    }
+}
+
+private struct SubjectHistorySection: View {
+    let sessions: [StudySession]
+
+    var body: some View {
+        Section("Study history") {
+            if sessions.isEmpty {
+                Text("No sessions for this subject yet.")
+                    .foregroundStyle(.secondary)
+            } else {
+                ForEach(sessions) { session in
+                    SessionRow(session: session)
+                }
+            }
+        }
+    }
+}
+
+private struct SubjectDetailToolbar: ToolbarContent {
+    let edit: () -> Void
+    let archive: () -> Void
+    let requestDelete: () -> Void
+
+    var body: some ToolbarContent {
+        ToolbarItem(placement: .topBarTrailing) {
+            Menu {
+                Button("Edit", systemImage: "pencil") {
+                    edit()
+                }
+
+                Button("Archive", systemImage: "archivebox") {
+                    archive()
+                }
+
+                Button("Delete permanently", systemImage: "trash", role: .destructive) {
+                    requestDelete()
+                }
+            } label: {
+                Image(systemName: "ellipsis.circle")
+            }
+        }
     }
 }
 
