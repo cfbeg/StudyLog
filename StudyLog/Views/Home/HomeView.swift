@@ -30,7 +30,7 @@ struct HomeView: View {
             List {
                 Section {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Today's study")
+                        Text("今日の勉強")
                             .font(.headline)
                         Text(DateUtils.formatDuration(StatisticsService.totalSecondsToday(sessions: sessions)))
                             .font(.system(size: 38, weight: .bold, design: .rounded))
@@ -41,7 +41,7 @@ struct HomeView: View {
                     Button {
                         isShowingTimer = true
                     } label: {
-                        Label("Start studying", systemImage: "play.circle.fill")
+                        Label("勉強開始", systemImage: "play.circle.fill")
                             .font(.headline)
                     }
                     .disabled(activeSubjects.isEmpty)
@@ -49,7 +49,7 @@ struct HomeView: View {
                     Button {
                         isShowingManualRecord = true
                     } label: {
-                        Label("Add manual record", systemImage: "plus.circle")
+                        Label("手動で記録", systemImage: "plus.circle")
                     }
                     .disabled(activeSubjects.isEmpty)
                 }
@@ -60,7 +60,7 @@ struct HomeView: View {
                     }
                 }
 
-                Section("Today by subject") {
+                Section("今日の教科別時間") {
                     ForEach(activeSubjects) { subject in
                         HStack {
                             Label(subject.name, systemImage: subject.iconName)
@@ -72,9 +72,9 @@ struct HomeView: View {
                     }
                 }
 
-                Section("Upcoming tasks") {
+                Section("期限が近いタスク") {
                     if todayTasks.isEmpty {
-                        Text("No open tasks. Nice and quiet.")
+                        Text("未完了タスクはありません。いい感じです。")
                             .foregroundStyle(.secondary)
                     } else {
                         ForEach(todayTasks.prefix(6)) { task in
@@ -110,9 +110,9 @@ struct HomeView: View {
 
     private func addStarterSubjects() {
         let samples = [
-            ("Math", "#3B82F6", "function"),
-            ("English", "#EF4444", "text.book.closed.fill"),
-            ("Classics", "#8B5CF6", "scroll.fill")
+            ("数学", "#3B82F6", "function"),
+            ("英語", "#EF4444", "text.book.closed.fill"),
+            ("古典", "#8B5CF6", "scroll.fill")
         ]
 
         for (index, sample) in samples.enumerated() {
@@ -127,11 +127,11 @@ private struct EmptyStudyLogView: View {
     var body: some View {
         Section {
             VStack(alignment: .leading, spacing: 8) {
-                Text("Create your first subjects")
+                Text("最初の教科を作成")
                     .font(.headline)
-                Text("Add subjects like Math or English, then create tasks and track study time.")
+                Text("数学や英語などの教科を追加して、タスクと勉強時間を記録しましょう。")
                     .foregroundStyle(.secondary)
-                Button("Add sample subjects", action: addSamples)
+                Button("サンプル教科を追加", action: addSamples)
                     .buttonStyle(.borderedProminent)
                     .padding(.top, 4)
             }

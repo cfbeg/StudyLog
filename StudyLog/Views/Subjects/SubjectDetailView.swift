@@ -64,13 +64,13 @@ struct SubjectDetailView: View {
         .sheet(isPresented: $isShowingSubjectEditor) {
             SubjectEditorView(subject: subject)
         }
-        .confirmationDialog("Delete this subject?", isPresented: $isShowingDeleteConfirmation, titleVisibility: .visible) {
-            Button("Delete permanently", role: .destructive) {
+        .confirmationDialog("この教科を削除しますか？", isPresented: $isShowingDeleteConfirmation, titleVisibility: .visible) {
+            Button("完全に削除", role: .destructive) {
                 permanentlyDeleteSubject()
             }
-            Button("Cancel", role: .cancel) {}
+            Button("キャンセル", role: .cancel) {}
         } message: {
-            Text("Past study sessions will remain, but subject and task links will be removed.")
+            Text("過去の勉強記録は残りますが、教科とタスクの紐づけは外れます。")
         }
     }
 
@@ -132,9 +132,9 @@ private struct SubjectOverviewSection: View {
                     .foregroundStyle(subjectColor)
 
                 HStack {
-                    MetricPill(title: "Today", seconds: todaySeconds)
-                    MetricPill(title: "Week", seconds: weekSeconds)
-                    MetricPill(title: "Total", seconds: totalSeconds)
+                    MetricPill(title: "今日", seconds: todaySeconds)
+                    MetricPill(title: "今週", seconds: weekSeconds)
+                    MetricPill(title: "累計", seconds: totalSeconds)
                 }
 
                 if subject.dailyGoalSeconds > 0 {
@@ -144,7 +144,7 @@ private struct SubjectOverviewSection: View {
                             goalSeconds: subject.dailyGoalSeconds
                         )
                     ) {
-                        Text("Daily goal \(DateUtils.formatDuration(subject.dailyGoalSeconds))")
+                        Text("1日の目標 \(DateUtils.formatDuration(subject.dailyGoalSeconds))")
                     }
                     .tint(subjectColor)
                 }
@@ -154,13 +154,13 @@ private struct SubjectOverviewSection: View {
             Button {
                 startStudy()
             } label: {
-                Label("Start studying this subject", systemImage: "play.circle.fill")
+                Label("この教科で勉強開始", systemImage: "play.circle.fill")
             }
 
             Button {
                 addTask()
             } label: {
-                Label("Add task", systemImage: "checklist")
+                Label("タスクを追加", systemImage: "checklist")
             }
         }
     }
@@ -170,9 +170,9 @@ private struct SubjectOpenTasksSection: View {
     let tasks: [StudyTask]
 
     var body: some View {
-        Section("Open tasks") {
+        Section("未完了タスク") {
             if tasks.isEmpty {
-                Text("No open tasks.")
+                Text("未完了タスクはありません。")
                     .foregroundStyle(.secondary)
             } else {
                 ForEach(tasks) { task in
@@ -199,7 +199,7 @@ private struct SubjectCompletedTasksSection: View {
                 }
             } label: {
                 Label(
-                    isShowingCompletedTasks ? "Hide completed" : "Show completed (\(tasks.count))",
+                    isShowingCompletedTasks ? "完了済みを隠す" : "完了済みを表示（\(tasks.count)件）",
                     systemImage: isShowingCompletedTasks ? "chevron.up.circle" : "chevron.down.circle"
                 )
             }
@@ -208,7 +208,7 @@ private struct SubjectCompletedTasksSection: View {
                 CompletedTaskList(tasks: tasks)
             }
         } header: {
-            Text("Completed")
+            Text("完了済み")
         }
     }
 }
@@ -218,7 +218,7 @@ private struct CompletedTaskList: View {
 
     var body: some View {
         if tasks.isEmpty {
-            Text("No completed tasks yet.")
+            Text("完了済みタスクはまだありません。")
                 .foregroundStyle(.secondary)
         } else {
             ForEach(tasks) { task in
@@ -236,9 +236,9 @@ private struct SubjectHistorySection: View {
     let sessions: [StudySession]
 
     var body: some View {
-        Section("Study history") {
+        Section("勉強履歴") {
             if sessions.isEmpty {
-                Text("No sessions for this subject yet.")
+                Text("この教科の勉強記録はまだありません。")
                     .foregroundStyle(.secondary)
             } else {
                 ForEach(sessions) { session in
@@ -257,15 +257,15 @@ private struct SubjectDetailToolbar: ToolbarContent {
     var body: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
             Menu {
-                Button("Edit", systemImage: "pencil") {
+                Button("編集", systemImage: "pencil") {
                     edit()
                 }
 
-                Button("Archive", systemImage: "archivebox") {
+                Button("アーカイブ", systemImage: "archivebox") {
                     archive()
                 }
 
-                Button("Delete permanently", systemImage: "trash", role: .destructive) {
+                Button("完全に削除", systemImage: "trash", role: .destructive) {
                     requestDelete()
                 }
             } label: {

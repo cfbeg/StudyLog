@@ -43,24 +43,24 @@ struct StudyTimerView: View {
         NavigationStack {
             VStack(spacing: 24) {
                 Form {
-                    Section("Target") {
-                        Picker("Subject", selection: $selectedSubjectID) {
-                            Text("Choose a subject").tag(UUID?.none)
+                    Section("対象") {
+                        Picker("教科", selection: $selectedSubjectID) {
+                            Text("教科を選択").tag(UUID?.none)
                             ForEach(activeSubjects) { subject in
                                 Text(subject.name).tag(UUID?.some(subject.id))
                             }
                         }
                         .disabled(engine.isRunning)
 
-                        Picker("Task", selection: $selectedTaskID) {
-                            Text("None").tag(UUID?.none)
+                        Picker("タスク", selection: $selectedTaskID) {
+                            Text("なし").tag(UUID?.none)
                             ForEach(availableTasks) { task in
                                 Text(task.title).tag(UUID?.some(task.id))
                             }
                         }
                         .disabled(selectedSubjectID == nil || engine.isRunning)
 
-                        TextField("Memo", text: $memo, axis: .vertical)
+                        TextField("メモ", text: $memo, axis: .vertical)
                             .lineLimit(2...4)
                     }
                 }
@@ -76,7 +76,7 @@ struct StudyTimerView: View {
                             engine.start()
                             displaySeconds = 0
                         } label: {
-                            Label("Start", systemImage: "play.fill")
+                            Label("開始", systemImage: "play.fill")
                                 .frame(maxWidth: .infinity)
                         }
                         .buttonStyle(.borderedProminent)
@@ -89,7 +89,7 @@ struct StudyTimerView: View {
                                 engine.pause()
                             }
                         } label: {
-                            Label(engine.isPaused ? "Resume" : "Pause", systemImage: engine.isPaused ? "play.fill" : "pause.fill")
+                            Label(engine.isPaused ? "再開" : "一時停止", systemImage: engine.isPaused ? "play.fill" : "pause.fill")
                                 .frame(maxWidth: .infinity)
                         }
                         .buttonStyle(.bordered)
@@ -97,7 +97,7 @@ struct StudyTimerView: View {
                         Button(role: .destructive) {
                             saveAndStop()
                         } label: {
-                            Label("Stop and save", systemImage: "stop.fill")
+                            Label("終了して保存", systemImage: "stop.fill")
                                 .frame(maxWidth: .infinity)
                         }
                         .buttonStyle(.borderedProminent)
@@ -107,10 +107,10 @@ struct StudyTimerView: View {
 
                 Spacer()
             }
-            .navigationTitle("Study timer")
+            .navigationTitle("勉強タイマー")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Close") {
+                    Button("閉じる") {
                         dismiss()
                     }
                     .disabled(engine.isRunning)

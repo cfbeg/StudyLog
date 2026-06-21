@@ -31,44 +31,44 @@ struct TaskEditorView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Content") {
-                    TextField("Task title", text: $title)
-                    TextField("Memo", text: $note, axis: .vertical)
+                Section("内容") {
+                    TextField("タスク名", text: $title)
+                    TextField("メモ", text: $note, axis: .vertical)
                         .lineLimit(3...6)
                 }
 
-                Section("Plan") {
-                    Stepper("Estimate \(estimatedMinutes) min", value: $estimatedMinutes, in: 0...600, step: 5)
-                    Toggle("Set due date", isOn: $hasDueDate)
+                Section("予定") {
+                    Stepper("予定時間 \(estimatedMinutes)分", value: $estimatedMinutes, in: 0...600, step: 5)
+                    Toggle("期限を設定", isOn: $hasDueDate)
                     if hasDueDate {
-                        DatePicker("Due date", selection: $dueDate, displayedComponents: .date)
+                        DatePicker("期限", selection: $dueDate, displayedComponents: .date)
                     }
                 }
 
-                Section("State") {
-                    Picker("Status", selection: $status) {
+                Section("状態") {
+                    Picker("状態", selection: $status) {
                         ForEach(TaskStatus.allCases) { status in
                             Text(status.displayName).tag(status)
                         }
                     }
 
-                    Picker("Priority", selection: $priority) {
+                    Picker("優先度", selection: $priority) {
                         ForEach(TaskPriority.allCases) { priority in
                             Text(priority.displayName).tag(priority)
                         }
                     }
                 }
             }
-            .navigationTitle(task == nil ? "Add task" : "Edit task")
+            .navigationTitle(task == nil ? "タスクを追加" : "タスクを編集")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
+                    Button("キャンセル") {
                         dismiss()
                     }
                 }
 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") {
+                    Button("保存") {
                         save()
                     }
                     .disabled(title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)

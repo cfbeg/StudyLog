@@ -17,9 +17,9 @@ struct TaskRow: View {
                         Text(subject.name)
                     }
                     Text(task.status.displayName)
-                    Text("Actual \(DateUtils.formatDuration(task.spentSeconds))")
+                    Text("実績 \(DateUtils.formatDuration(task.spentSeconds))")
                     if task.estimatedSeconds > 0 {
-                        Text("Estimate \(DateUtils.formatDuration(task.estimatedSeconds))")
+                        Text("予定 \(DateUtils.formatDuration(task.estimatedSeconds))")
                     }
                 }
                 .font(.caption)

@@ -38,9 +38,9 @@ enum DateUtils {
         let minutes = (safeSeconds % 3600) / 60
 
         if hours > 0 {
-            return "\(hours)h \(minutes)m"
+            return "\(hours)時間 \(minutes)分"
         }
 
-        return "\(minutes)m"
+        return "\(minutes)分"
     }
 }

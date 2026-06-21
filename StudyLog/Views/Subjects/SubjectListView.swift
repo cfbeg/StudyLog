@@ -32,7 +32,7 @@ struct SubjectListView: View {
                     isShowingDeleteConfirmation = true
                 }
             )
-            .navigationTitle("Subjects")
+            .navigationTitle("教科")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     EditButton()
@@ -42,7 +42,7 @@ struct SubjectListView: View {
                     Button {
                         isShowingEditor = true
                     } label: {
-                        Label("Add subject", systemImage: "plus")
+                        Label("教科を追加", systemImage: "plus")
                     }
                 }
             }
@@ -50,17 +50,17 @@ struct SubjectListView: View {
                 SubjectEditorView()
             }
             .confirmationDialog(
-                "Delete this subject?",
+                "この教科を削除しますか？",
                 isPresented: $isShowingDeleteConfirmation,
                 titleVisibility: .visible,
                 actions: {
-                Button("Delete permanently", role: .destructive) {
+                Button("完全に削除", role: .destructive) {
                     if let subject = subjectPendingDeletion {
                         permanentlyDelete(subject)
                     }
                     subjectPendingDeletion = nil
                 }
-                Button("Cancel", role: .cancel) {
+                Button("キャンセル", role: .cancel) {
                     subjectPendingDeletion = nil
                 }
             },
@@ -72,10 +72,10 @@ struct SubjectListView: View {
 
     private var deleteConfirmationMessage: String {
         guard let subject = subjectPendingDeletion else {
-            return "Past study sessions remain as no-subject records."
+            return "過去の勉強記録は「教科なし」の記録として残ります。"
         }
 
-        return "\(subject.name) will be deleted. Past study sessions remain as no-subject records."
+        return "\(subject.name)を削除します。過去の勉強記録は「教科なし」の記録として残ります。"
     }
 
     private func moveSubjects(from source: IndexSet, to destination: Int) {
@@ -176,9 +176,9 @@ private struct ActiveSubjectSection: View {
             }
             .onMove(perform: moveSubjects)
         } header: {
-            Text("Active")
+            Text("使用中")
         } footer: {
-            Text("Use Edit to reorder subjects. Deleting a subject keeps past study sessions as no-subject records.")
+            Text("編集で並び替えできます。教科を削除しても、過去の勉強記録は「教科なし」として残ります。")
         }
     }
 }
@@ -190,7 +190,7 @@ private struct ArchivedSubjectSection: View {
     let requestDelete: (Subject) -> Void
 
     var body: some View {
-        Section("Archived") {
+        Section("アーカイブ済み") {
             ForEach(subjects) { subject in
                 SubjectSummaryRow(subject: subject, sessions: sessions)
                     .swipeActions(edge: .trailing, allowsFullSwipe: false) {
@@ -223,7 +223,7 @@ private struct SubjectDeleteButton: View {
         Button(role: .destructive) {
             requestDelete(subject)
         } label: {
-            Label("Delete", systemImage: "trash")
+            Label("削除", systemImage: "trash")
         }
     }
 }
@@ -236,7 +236,7 @@ private struct SubjectArchiveButton: View {
         Button {
             archive(subject)
         } label: {
-            Label("Archive", systemImage: "archivebox")
+            Label("アーカイブ", systemImage: "archivebox")
         }
         .tint(.orange)
     }
@@ -250,7 +250,7 @@ private struct SubjectRestoreButton: View {
         Button {
             restore(subject)
         } label: {
-            Label("Restore", systemImage: "arrow.uturn.backward")
+            Label("戻す", systemImage: "arrow.uturn.backward")
         }
         .tint(.green)
     }
@@ -259,9 +259,9 @@ private struct SubjectRestoreButton: View {
 private struct SubjectEmptySection: View {
     var body: some View {
         ContentUnavailableView(
-            "No subjects",
+            "教科がありません",
             systemImage: "books.vertical",
-            description: Text("Tap the plus button to add your first subject.")
+            description: Text("＋ボタンから最初の教科を追加してください。")
         )
     }
 }
@@ -283,7 +283,7 @@ private struct SubjectSummaryRow: View {
     }
 
     private var subtitle: String {
-        "Today \(DateUtils.formatDuration(todaySeconds)) / Week \(DateUtils.formatDuration(weekSeconds))"
+        "今日 \(DateUtils.formatDuration(todaySeconds)) / 今週 \(DateUtils.formatDuration(weekSeconds))"
     }
 
     var body: some View {

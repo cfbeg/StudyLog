@@ -23,27 +23,27 @@ struct ContentView: View {
         TabView {
             HomeView()
                 .tabItem {
-                    Label("Home", systemImage: "house.fill")
+                    Label("ホーム", systemImage: "house.fill")
                 }
 
             SubjectListView()
                 .tabItem {
-                    Label("Subjects", systemImage: "books.vertical.fill")
+                    Label("教科", systemImage: "books.vertical.fill")
                 }
 
             StatisticsView()
                 .tabItem {
-                    Label("Stats", systemImage: "chart.bar.xaxis")
+                    Label("統計", systemImage: "chart.bar.xaxis")
                 }
 
             RecordListView()
                 .tabItem {
-                    Label("Records", systemImage: "calendar")
+                    Label("記録", systemImage: "calendar")
                 }
 
             SettingsView()
                 .tabItem {
-                    Label("Settings", systemImage: "gearshape.fill")
+                    Label("設定", systemImage: "gearshape.fill")
                 }
         }
         .preferredColorScheme(preferredColorScheme)
@@ -87,7 +87,7 @@ private struct StatisticsView: View {
                 weekSummaries: weekSummaries,
                 topTasks: Array(topTasks.prefix(8))
             )
-            .navigationTitle("Stats")
+            .navigationTitle("統計")
         }
     }
 }
@@ -110,12 +110,12 @@ private struct TodaySubjectChartSection: View {
     let summaries: [SubjectTimeSummary]
 
     var body: some View {
-        Section("Today by subject") {
+        Section("今日の教科別時間") {
             if summaries.isEmpty {
                 ContentUnavailableView(
-                    "No study logged today",
+                    "今日はまだ記録がありません",
                     systemImage: "chart.pie",
-                    description: Text("Start the timer or add a manual record to see the chart.")
+                    description: Text("タイマーを使うか手動記録を追加すると、グラフが表示されます。")
                 )
             } else {
                 TodaySubjectDonutChart(summaries: summaries)
@@ -131,7 +131,7 @@ private struct TodaySubjectDonutChart: View {
     var body: some View {
         Chart(summaries) { summary in
             SectorMark(
-                angle: .value("Seconds", summary.seconds),
+                angle: .value("秒", summary.seconds),
                 innerRadius: .ratio(0.55),
                 angularInset: 2
             )
@@ -170,11 +170,11 @@ private struct WeeklyBarChartSection: View {
     let summaries: [DailyTimeSummary]
 
     var body: some View {
-        Section("This week") {
+        Section("今週") {
             Chart(summaries) { summary in
                 BarMark(
-                    x: .value("Day", summary.label),
-                    y: .value("Minutes", summary.seconds / 60)
+                    x: .value("日", summary.label),
+                    y: .value("分", summary.seconds / 60)
                 )
                 .foregroundStyle(.blue.gradient)
             }
@@ -191,9 +191,9 @@ private struct TopTaskChartSection: View {
     }
 
     var body: some View {
-        Section("Top tasks by time") {
+        Section("時間の多いタスク") {
             if tasks.isEmpty {
-                Text("No task-linked study sessions yet.")
+                Text("タスクに紐づいた勉強記録はまだありません。")
                     .foregroundStyle(.secondary)
             } else {
                 TopTaskBarChart(tasks: tasks)
@@ -210,8 +210,8 @@ private struct TopTaskBarChart: View {
     var body: some View {
         Chart(tasks) { task in
             BarMark(
-                x: .value("Minutes", task.spentSeconds / 60),
-                y: .value("Task", task.title)
+                x: .value("分", task.spentSeconds / 60),
+                y: .value("タスク", task.title)
             )
             .foregroundStyle(.green.gradient)
         }

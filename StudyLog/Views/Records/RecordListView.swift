@@ -30,13 +30,13 @@ struct RecordListView: View {
                 groupedSessions: groupedSessions,
                 deleteSessions: deleteSessions
             )
-            .navigationTitle("Records")
+            .navigationTitle("記録")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         isShowingManualRecord = true
                     } label: {
-                        Label("Manual record", systemImage: "plus")
+                        Label("手動記録", systemImage: "plus")
                     }
                 }
             }
@@ -63,9 +63,9 @@ private struct RecordListContent: View {
         List {
             if sessions.isEmpty {
                 ContentUnavailableView(
-                    "No records yet",
+                    "記録はまだありません",
                     systemImage: "calendar.badge.clock",
-                    description: Text("Start the timer or add a manual record to create study logs.")
+                    description: Text("タイマーを使うか手動記録を追加すると、勉強ログが作成されます。")
                 )
             } else {
                 ForEach(groupedSessions, id: \.day) { group in

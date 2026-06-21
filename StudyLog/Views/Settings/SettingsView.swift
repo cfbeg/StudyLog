@@ -50,7 +50,7 @@ struct SettingsView: View {
                     isShowingDeleteAllConfirmation = true
                 }
             )
-            .navigationTitle("Settings")
+            .navigationTitle("設定")
             .onChange(of: dailyReminderEnabled) { _, enabled in
                 configureDailyReminder(enabled: enabled)
             }
@@ -66,17 +66,17 @@ struct SettingsView: View {
                 ShareSheet(activityItems: [exportFile.url])
             }
             .alert("StudyLog", isPresented: alertBinding) {
-                Button("OK", role: .cancel) {}
+                Button("閉じる", role: .cancel) {}
             } message: {
                 Text(alertMessage ?? "")
             }
-            .confirmationDialog("Delete all data?", isPresented: $isShowingDeleteAllConfirmation, titleVisibility: .visible) {
-                Button("Delete all data", role: .destructive) {
+            .confirmationDialog("すべてのデータを削除しますか？", isPresented: $isShowingDeleteAllConfirmation, titleVisibility: .visible) {
+                Button("すべて削除", role: .destructive) {
                     deleteAllData()
                 }
-                Button("Cancel", role: .cancel) {}
+                Button("キャンセル", role: .cancel) {}
             } message: {
-                Text("This removes all subjects, tasks, and study sessions. This cannot be undone.")
+                Text("すべての教科、タスク、勉強記録が削除されます。この操作は元に戻せません。")
             }
         }
     }
@@ -85,7 +85,7 @@ struct SettingsView: View {
         do {
             exportFile = ExportFile(url: try ExportService.makeCSVFile(sessions: sessions))
         } catch {
-            alertMessage = "Failed to create CSV: \(error.localizedDescription)"
+            alertMessage = "CSVの作成に失敗しました: \(error.localizedDescription)"
         }
     }
 
@@ -95,7 +95,7 @@ struct SettingsView: View {
                 if enabled {
                     guard try await NotificationService.requestAuthorization() else {
                         dailyReminderEnabled = false
-                        alertMessage = "Notification permission was not granted."
+                        alertMessage = "通知の許可が得られませんでした。"
                         return
                     }
 
@@ -106,7 +106,7 @@ struct SettingsView: View {
                 }
             } catch {
                 dailyReminderEnabled = false
-                alertMessage = "Failed to configure notification: \(error.localizedDescription)"
+                alertMessage = "通知設定に失敗しました: \(error.localizedDescription)"
             }
         }
     }
@@ -119,7 +119,7 @@ struct SettingsView: View {
                 if enabled {
                     guard try await NotificationService.requestAuthorization() else {
                         dueDateReminderEnabled = false
-                        alertMessage = "Notification permission was not granted."
+                        alertMessage = "通知の許可が得られませんでした。"
                         return
                     }
                     try await NotificationService.rescheduleDueDateNotifications(for: currentTasks)
@@ -128,7 +128,7 @@ struct SettingsView: View {
                 }
             } catch {
                 dueDateReminderEnabled = false
-                alertMessage = "Failed to configure due-date reminders: \(error.localizedDescription)"
+                alertMessage = "期限通知の設定に失敗しました: \(error.localizedDescription)"
             }
         }
     }
@@ -191,9 +191,9 @@ private struct SettingsGoalsSection: View {
     @Binding var weekStartsOnMonday: Bool
 
     var body: some View {
-        Section("Goals") {
-            Stepper("Daily goal \(dailyGoalMinutes) min", value: $dailyGoalMinutes, in: 0...720, step: 15)
-            Toggle("Week starts on Monday", isOn: $weekStartsOnMonday)
+        Section("目標") {
+            Stepper("1日の目標 \(dailyGoalMinutes)分", value: $dailyGoalMinutes, in: 0...720, step: 15)
+            Toggle("週の開始を月曜日にする", isOn: $weekStartsOnMonday)
         }
     }
 }
@@ -205,17 +205,17 @@ private struct SettingsNotificationsSection: View {
 
     var body: some View {
         Section {
-            Toggle("Daily study reminder", isOn: $dailyReminderEnabled)
+            Toggle("毎日の勉強リマインダー", isOn: $dailyReminderEnabled)
 
             if dailyReminderEnabled {
-                DatePicker("Reminder time", selection: $reminderDate, displayedComponents: .hourAndMinute)
+                DatePicker("通知時刻", selection: $reminderDate, displayedComponents: .hourAndMinute)
             }
 
-            Toggle("Task due-date reminders", isOn: $dueDateReminderEnabled)
+            Toggle("タスク期限通知", isOn: $dueDateReminderEnabled)
         } header: {
-            Text("Notifications")
+            Text("通知")
         } footer: {
-            Text("Notifications are scheduled locally on this device.")
+            Text("通知はこの端末内だけでスケジュールされます。")
         }
     }
 }
@@ -227,18 +227,18 @@ private struct SettingsDataSection: View {
     let showDeleteAllConfirmation: () -> Void
 
     var body: some View {
-        Section("Data") {
+        Section("データ") {
             Button {
                 exportCSV()
             } label: {
-                Label("Export CSV", systemImage: "square.and.arrow.up")
+                Label("CSVを書き出す", systemImage: "square.and.arrow.up")
             }
             .disabled(!canExportCSV)
 
             Button(role: .destructive) {
                 showDeleteAllConfirmation()
             } label: {
-                Label("Delete all data", systemImage: "trash")
+                Label("すべてのデータを削除", systemImage: "trash")
             }
             .disabled(!canDeleteAllData)
         }
@@ -249,11 +249,11 @@ private struct SettingsThemeSection: View {
     @Binding var appTheme: String
 
     var body: some View {
-        Section("Theme") {
-            Picker("App theme", selection: $appTheme) {
-                Text("System").tag("system")
-                Text("Light").tag("light")
-                Text("Dark").tag("dark")
+        Section("テーマ") {
+            Picker("アプリテーマ", selection: $appTheme) {
+                Text("システム設定").tag("system")
+                Text("ライト").tag("light")
+                Text("ダーク").tag("dark")
             }
         }
     }
@@ -261,8 +261,8 @@ private struct SettingsThemeSection: View {
 
 private struct SettingsAboutSection: View {
     var body: some View {
-        Section("About") {
-            Text("Create subjects, add tasks, start a timer, and review study time by subject and task.")
+        Section("このアプリについて") {
+            Text("教科を作り、タスクを追加し、タイマーで勉強時間を記録して、教科別・タスク別に振り返れます。")
                 .foregroundStyle(.secondary)
         }
     }

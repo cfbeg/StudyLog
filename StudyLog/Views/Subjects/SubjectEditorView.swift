@@ -29,10 +29,10 @@ struct SubjectEditorView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Basic") {
-                    TextField("Subject name", text: $name)
+                Section("基本") {
+                    TextField("教科名", text: $name)
 
-                    Picker("Icon", selection: $iconName) {
+                    Picker("アイコン", selection: $iconName) {
                         ForEach(iconChoices, id: \.self) { icon in
                             Label(icon, systemImage: icon).tag(icon)
                         }
@@ -58,27 +58,27 @@ struct SubjectEditorView: View {
                     .padding(.vertical, 4)
                 }
 
-                Section("Goals") {
-                    Stepper("Daily \(dailyGoalMinutes) min", value: $dailyGoalMinutes, in: 0...720, step: 15)
-                    Stepper("Weekly \(weeklyGoalMinutes) min", value: $weeklyGoalMinutes, in: 0...5000, step: 30)
+                Section("目標") {
+                    Stepper("1日 \(dailyGoalMinutes)分", value: $dailyGoalMinutes, in: 0...720, step: 15)
+                    Stepper("1週間 \(weeklyGoalMinutes)分", value: $weeklyGoalMinutes, in: 0...5000, step: 30)
                 }
 
                 if subject != nil {
-                    Section("Archive") {
-                        Toggle("Archive this subject", isOn: $isArchived)
+                    Section("アーカイブ") {
+                        Toggle("この教科をアーカイブする", isOn: $isArchived)
                     }
                 }
             }
-            .navigationTitle(subject == nil ? "Add subject" : "Edit subject")
+            .navigationTitle(subject == nil ? "教科を追加" : "教科を編集")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
+                    Button("キャンセル") {
                         dismiss()
                     }
                 }
 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") {
+                    Button("保存") {
                         save()
                     }
                     .disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)

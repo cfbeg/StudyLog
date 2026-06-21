@@ -14,8 +14,8 @@ enum NotificationService {
 
     static func scheduleDailyReminder(hour: Int, minute: Int) async throws {
         let content = UNMutableNotificationContent()
-        content.title = "Log today's study"
-        content.body = "Even a short session is worth recording in StudyLog."
+        content.title = "今日の勉強を記録しよう"
+        content.body = "短い勉強でも、StudyLogに残しておく価値があります。"
         content.sound = .default
 
         var dateComponents = DateComponents()
@@ -46,7 +46,7 @@ enum NotificationService {
             }
 
             let content = UNMutableNotificationContent()
-            content.title = "Task due tomorrow"
+            content.title = "明日が期限のタスクがあります"
             content.body = task.subject.map { "\($0.name): \(task.title)" } ?? task.title
             content.sound = .default
 

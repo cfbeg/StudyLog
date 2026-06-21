@@ -21,17 +21,17 @@ struct TaskDetailView: View {
                     Text(task.title)
                         .font(.title2.bold())
                     if let subject = task.subject {
-                        Text("Subject: \(subject.name)")
+                        Text("教科: \(subject.name)")
                             .foregroundStyle(.secondary)
                     }
-                    Text("Status: \(task.status.displayName)")
-                    Text("Priority: \(task.priority.displayName)")
+                    Text("状態: \(task.status.displayName)")
+                    Text("優先度: \(task.priority.displayName)")
                     if task.estimatedSeconds > 0 {
-                        Text("Estimate: \(DateUtils.formatDuration(task.estimatedSeconds))")
+                        Text("予定時間: \(DateUtils.formatDuration(task.estimatedSeconds))")
                     }
-                    Text("Actual: \(DateUtils.formatDuration(task.spentSeconds))")
+                    Text("実績時間: \(DateUtils.formatDuration(task.spentSeconds))")
                     if let dueDate = task.dueDate {
-                        Text("Due: \(DateUtils.dateFormatter.string(from: dueDate))")
+                        Text("期限: \(DateUtils.dateFormatter.string(from: dueDate))")
                     }
                     if !task.note.isEmpty {
                         Text(task.note)
@@ -44,20 +44,20 @@ struct TaskDetailView: View {
                 Button {
                     isShowingTimer = true
                 } label: {
-                    Label("Start this task", systemImage: "play.circle.fill")
+                    Label("このタスクで勉強開始", systemImage: "play.circle.fill")
                 }
                 .disabled(task.subject == nil)
 
                 Button {
                     toggleCompletion()
                 } label: {
-                    Label(task.status == .completed ? "Mark open" : "Mark completed", systemImage: task.status == .completed ? "arrow.uturn.backward.circle" : "checkmark.circle")
+                    Label(task.status == .completed ? "未完了に戻す" : "完了にする", systemImage: task.status == .completed ? "arrow.uturn.backward.circle" : "checkmark.circle")
                 }
             }
 
-            Section("History") {
+            Section("履歴") {
                 if sortedSessions.isEmpty {
-                    Text("No sessions for this task yet.")
+                    Text("このタスクの勉強記録はまだありません。")
                         .foregroundStyle(.secondary)
                 } else {
                     ForEach(sortedSessions) { session in
@@ -70,16 +70,16 @@ struct TaskDetailView: View {
                 Button(role: .destructive) {
                     isShowingDeleteConfirmation = true
                 } label: {
-                    Label("Delete", systemImage: "trash")
+                    Label("削除", systemImage: "trash")
                 }
             } footer: {
-                Text("Deleting a task keeps past study sessions, but removes the task link.")
+                Text("タスクを削除しても過去の勉強記録は残りますが、タスクとの紐づけは外れます。")
             }
         }
-        .navigationTitle("Task details")
+        .navigationTitle("タスク詳細")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button("Edit") {
+                Button("編集") {
                     isShowingEditor = true
                 }
             }
@@ -94,11 +94,11 @@ struct TaskDetailView: View {
                 StudyTimerView(initialSubject: subject, initialTask: task)
             }
         }
-        .confirmationDialog("Delete this task?", isPresented: $isShowingDeleteConfirmation, titleVisibility: .visible) {
-            Button("Delete", role: .destructive) {
+        .confirmationDialog("このタスクを削除しますか？", isPresented: $isShowingDeleteConfirmation, titleVisibility: .visible) {
+            Button("削除", role: .destructive) {
                 deleteTask()
             }
-            Button("Cancel", role: .cancel) {}
+            Button("キャンセル", role: .cancel) {}
         }
     }
 
