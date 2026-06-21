@@ -8,6 +8,7 @@ struct SubjectListView: View {
 
     @State private var isShowingEditor = false
     @State private var subjectPendingDeletion: Subject?
+    @State private var isShowingDeleteConfirmation = false
 
     private var activeSubjects: [Subject] {
         subjects.filter { !$0.isArchived }
@@ -28,6 +29,7 @@ struct SubjectListView: View {
                 restore: restore,
                 requestDelete: { subject in
                     subjectPendingDeletion = subject
+                    isShowingDeleteConfirmation = true
                 }
             )
             .navigationTitle("Subjects")
@@ -49,17 +51,31 @@ struct SubjectListView: View {
             }
             .confirmationDialog(
                 "Delete this subject?",
-                item: $subjectPendingDeletion,
-                titleVisibility: .visible
-            ) { subject in
+                isPresented: $isShowingDeleteConfirmation,
+                titleVisibility: .visible,
+                actions: {
                 Button("Delete permanently", role: .destructive) {
-                    permanentlyDelete(subject)
+                    if let subject = subjectPendingDeletion {
+                        permanentlyDelete(subject)
+                    }
+                    subjectPendingDeletion = nil
                 }
-                Button("Cancel", role: .cancel) {}
-            } message: { subject in
-                Text("\(subject.name) will be deleted. Past study sessions remain as no-subject records.")
-            }
+                Button("Cancel", role: .cancel) {
+                    subjectPendingDeletion = nil
+                }
+            },
+                message: {
+                Text(deleteConfirmationMessage)
+            })
         }
+    }
+
+    private var deleteConfirmationMessage: String {
+        guard let subject = subjectPendingDeletion else {
+            return "Past study sessions remain as no-subject records."
+        }
+
+        return "\(subject.name) will be deleted. Past study sessions remain as no-subject records."
     }
 
     private func moveSubjects(from source: IndexSet, to destination: Int) {
